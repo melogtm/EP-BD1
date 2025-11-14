@@ -2,65 +2,117 @@
 
 Siga os passos abaixo para clonar e configurar o projeto em sua máquina.
 
-1. Clonar o Repositório
+---
+
+## 1. Clonar o Repositório
 
 ```bash
-
 git clone <URL_DO_SEU_REPOSITORIO_GIT>
 cd <NOME_DA_PASTA_DO_PROJETO>
 ```
 
-2. Instalar as Dependências
+---
 
-Este comando irá instalar todos os pacotes listados no package.json.
-Bash
+## 2. Instalar as Dependências
+
+Este comando irá instalar todos os pacotes listados no package.json:
 
 ```bash
-yarn 
+npm install
 ```
 
-# Configurar as Variáveis de Ambiente
+---
+
+## 3. Configurar as Variáveis de Ambiente
 
 As variáveis de ambiente são usadas para armazenar informações sensíveis, como as credenciais do banco de dados.
 
-Copie o arquivo de exemplo .env.example para um novo arquivo chamado .env.
+Copie o arquivo de exemplo `.env.example` para um novo arquivo chamado `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
+---
 
-# Executar as Migrations do Banco de Dados
+## 4. Subir o Banco de Dados (Docker)
 
-Com o banco de dados rodando, precisamos criar as tabelas. O Prisma faz isso de forma automática. Este comando irá ler o schema.prisma e aplicar a estrutura no banco.
+Certifique-se de que o Docker está instalado e rodando.
+
+Para subir os serviços:
 
 ```bash
-npx prisma migrate dev
+docker compose up -d
 ```
 
+Para derrubar:
 
-# Rodando a Aplicação
+```bash
+docker compose down
+```
+
+---
+
+## 5. Executar as Migrations do Banco de Dados (Drizzle)
+
+Com o banco rodando, execute:
+
+```bash
+npm run db:migrate
+```
+
+Comandos úteis:
+
+Gerar migrations automaticamente:
+```bash
+npm run db:generate
+```
+
+Aplicar alterações no banco sem gerar migration:
+```bash
+npm run db:push
+```
+
+Abrir o Drizzle Studio:
+```bash
+npm run db:studio
+```
+
+---
+
+## 6. Rodando a Aplicação
 
 Com tudo configurado, você pode iniciar o servidor de desenvolvimento:
 
 ```bash
-yarn dev
+npm run dev
 ```
-O servidor estará rodando e escutando na porta 3000. Você pode acessá-lo em http://localhost:3000. O servidor reiniciará automaticamente sempre que você salvar uma alteração nos arquivos.
 
-# Trabalhando com Migrations
+O servidor estará rodando na porta **3000**:  
+http://localhost:3000
 
-O Prisma gerencia a evolução do schema do banco de dados através de migrations.
+O servidor reiniciará automaticamente sempre que você salvar uma alteração nos arquivos.
 
-    Para aplicar migrations existentes (ex: depois de um git pull que trouxe novas alterações no schema), rode:
+---
+
+## 7. Trabalhando com Migrations
+
+O Drizzle gerencia a evolução do banco através de migrations.
+
+Aplicar migrations existentes (ex: depois de um git pull que alterou o schema):
 
 ```bash
-npx prisma migrate dev
+npm run db:migrate
 ```
 
-Para criar uma nova migration (depois que você alterou o arquivo prisma/schema.prisma), rode:
+Criar uma nova migration após editar o schema:
 
 ```bash
-npx prisma migrate dev --name "nome-descritivo-da-sua-alteracao"
+npm run db:generate
 ```
-Exemplo: npx prisma migrate dev --name "adiciona-campo-de-preco-em-livro"
+
+Depois aplicar:
+
+```bash
+npm run db:migrate
+```

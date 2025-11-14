@@ -8,6 +8,13 @@
       "when": 1763081723564,
       "tag": "0000_broken_ser_duncan",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1763084174148,
+      "tag": "0001_faulty_mandroid",
+      "breakpoints": true
     }
   ]
 }

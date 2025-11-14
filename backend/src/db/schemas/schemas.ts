@@ -10,7 +10,7 @@ import {
 import { relations } from "drizzle-orm";
 
 // Tabela Editora
-export const editora = pgTable("Editora", {
+export const editora = pgTable("editora", {
   id: serial("id").primaryKey(),
   nome: text("nome").notNull(),
   endereco: text("endereco").notNull(),

@@ -1,5 +1,8 @@
 import express from "express";
 import { editoraRoutes } from "./routes/editora.routes";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
