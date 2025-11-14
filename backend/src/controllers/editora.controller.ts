@@ -1,5 +1,5 @@
 import {type Request, type Response} from "express";
-import { EditoraService } from "../services/editora.service.js";
+import { EditoraService } from "../services/editora.service";
 
 
 export class EditoraController {

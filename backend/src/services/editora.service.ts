@@ -1,50 +1,49 @@
-import { type Editora } from "@prisma/client";
-import { EditoraRepository } from "../repositories/editora.repository.js";
+import { EditoraRepository } from "../repositories/editora.repository";
 
 export class EditoraService {
-    constructor(private repository = new EditoraRepository()) {}
+  constructor(private repository = new EditoraRepository()) {}
 
-    async create(data: {nome: string, endereco: string}): Promise<Editora> {
-        const editora = await this.repository.findByName(data.nome);
+  async create(data: { nome: string; endereco: string }) {
+    const editora = await this.repository.findByName(data.nome);
 
-        if (editora) {
-            throw new Error('Editora já existe');
-        }
-
-        return this.repository.create(data);
+    if (editora) {
+      throw new Error("Editora já existe");
     }
 
-    async getAll(): Promise<Editora[]> {
-        return this.repository.findAll();
+    return this.repository.create(data);
+  }
+
+  async getAll() {
+    return this.repository.findAll();
+  }
+
+  async getById(id: number) {
+    const editora = await this.repository.findById(id);
+
+    if (!editora) {
+      throw new Error("Editora não encontrada");
     }
 
-    async getById(id: number): Promise<Editora> {
-        const editora =  await this.repository.findById(id);
+    return editora;
+  }
 
-        if (!editora) {
-            throw new Error('Editora não encontrada');
-        }
+  async update(id: number, data: { nome?: string; endereco?: string }) {
+    const editora = await this.repository.findById(id);
 
-        return editora;
+    if (!editora) {
+      throw new Error("Editora não encontrada");
     }
 
-    async update(id: number, data: {nome?: string, endereco?: string}): Promise<Editora> {
-        const editora = await this.repository.findById(id);
-        
-        if (!editora) {
-            throw new Error('Editora não encontrada');
-        }
-        
-        return this.repository.update(id, data);
+    return this.repository.update(id, data);
+  }
+
+  async delete(id: number) {
+    const editora = await this.repository.findById(id);
+
+    if (!editora) {
+      throw new Error("Editora não encontrada");
     }
 
-    async delete(id: number): Promise<Editora> {
-        const editora = await this.repository.findById(id);
-        
-        if (!editora) {
-            throw new Error('Editora não encontrada');
-        }
-
-        return this.repository.delete(id);
-    }
+    return this.repository.delete(id);
+  }
 }

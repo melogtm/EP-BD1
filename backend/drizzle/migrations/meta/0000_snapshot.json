@@ -1,0 +1,412 @@
+{
+  "id": "f728b2fb-b5fb-44af-ac78-967017227e79",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.autor": {
+      "name": "autor",
+      "schema": "",
+      "columns": {
+        "rg": {
+          "name": "rg",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nome": {
+          "name": "nome",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "endereco": {
+          "name": "endereco",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public._AutorToLivro": {
+      "name": "_AutorToLivro",
+      "schema": "",
+      "columns": {
+        "A": {
+          "name": "A",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "B": {
+          "name": "B",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "_AutorToLivro_A_autor_rg_fk": {
+          "name": "_AutorToLivro_A_autor_rg_fk",
+          "tableFrom": "_AutorToLivro",
+          "tableTo": "autor",
+          "columnsFrom": [
+            "A"
+          ],
+          "columnsTo": [
+            "rg"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "_AutorToLivro_B_livros_isbn_fk": {
+          "name": "_AutorToLivro_B_livros_isbn_fk",
+          "tableFrom": "_AutorToLivro",
+          "tableTo": "livros",
+          "columnsFrom": [
+            "B"
+          ],
+          "columnsTo": [
+            "isbn"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "_AutorToLivro_A_B_pk": {
+          "name": "_AutorToLivro_A_B_pk",
+          "columns": [
+            "A",
+            "B"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.contratada": {
+      "name": "contratada",
+      "schema": "",
+      "columns": {
+        "grafica_id": {
+          "name": "grafica_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "endereco": {
+          "name": "endereco",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "contratada_grafica_id_grafica_id_fk": {
+          "name": "contratada_grafica_id_grafica_id_fk",
+          "tableFrom": "contratada",
+          "tableTo": "grafica",
+          "columnsFrom": [
+            "grafica_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.contrato": {
+      "name": "contrato",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "valor": {
+          "name": "valor",
+          "type": "numeric(65, 30)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nome_responsavel": {
+          "name": "nome_responsavel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grafica_cont_id": {
+          "name": "grafica_cont_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "contrato_grafica_cont_id_contratada_grafica_id_fk": {
+          "name": "contrato_grafica_cont_id_contratada_grafica_id_fk",
+          "tableFrom": "contrato",
+          "tableTo": "contratada",
+          "columnsFrom": [
+            "grafica_cont_id"
+          ],
+          "columnsTo": [
+            "grafica_id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Editora": {
+      "name": "Editora",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nome": {
+          "name": "nome",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "endereco": {
+          "name": "endereco",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.grafica": {
+      "name": "grafica",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nome": {
+          "name": "nome",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.imprime": {
+      "name": "imprime",
+      "schema": "",
+      "columns": {
+        "lisbn": {
+          "name": "lisbn",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grafica_id": {
+          "name": "grafica_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nto_copias": {
+          "name": "nto_copias",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "data_entrega": {
+          "name": "data_entrega",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "imprime_lisbn_livros_isbn_fk": {
+          "name": "imprime_lisbn_livros_isbn_fk",
+          "tableFrom": "imprime",
+          "tableTo": "livros",
+          "columnsFrom": [
+            "lisbn"
+          ],
+          "columnsTo": [
+            "isbn"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
+        "imprime_grafica_id_grafica_id_fk": {
+          "name": "imprime_grafica_id_grafica_id_fk",
+          "tableFrom": "imprime",
+          "tableTo": "grafica",
+          "columnsFrom": [
+            "grafica_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "imprime_lisbn_grafica_id_pk": {
+          "name": "imprime_lisbn_grafica_id_pk",
+          "columns": [
+            "lisbn",
+            "grafica_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.livros": {
+      "name": "livros",
+      "schema": "",
+      "columns": {
+        "isbn": {
+          "name": "isbn",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "titulo": {
+          "name": "titulo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "data_de_publicacao": {
+          "name": "data_de_publicacao",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "editora_id": {
+          "name": "editora_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "livros_editora_id_Editora_id_fk": {
+          "name": "livros_editora_id_Editora_id_fk",
+          "tableFrom": "livros",
+          "tableTo": "Editora",
+          "columnsFrom": [
+            "editora_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.particular": {
+      "name": "particular",
+      "schema": "",
+      "columns": {
+        "grafica_id": {
+          "name": "grafica_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "particular_grafica_id_grafica_id_fk": {
+          "name": "particular_grafica_id_grafica_id_fk",
+          "tableFrom": "particular",
+          "tableTo": "grafica",
+          "columnsFrom": [
+            "grafica_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
