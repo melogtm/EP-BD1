@@ -1,0 +1,70 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@numeroSala = 101
+
+### 1. Criar nova sala
+POST {{baseUrl}}/salas
+Content-Type: application/json
+
+{
+  "numeroSala": 101,
+  "tipoSala": "Consultório"
+}
+
+### 2. Criar outra sala
+POST {{baseUrl}}/salas
+Content-Type: application/json
+
+{
+  "numeroSala": 102,
+  "tipoSala": "Laboratório"
+}
+
+### 3. Criar terceira sala
+POST {{baseUrl}}/salas
+Content-Type: application/json
+
+{
+  "numeroSala": 103,
+  "tipoSala": "Farmácia"
+}
+
+### 4. Listar todas as salas
+GET {{baseUrl}}/salas
+
+### 5. Buscar uma sala por número
+GET {{baseUrl}}/salas/{{numeroSala}}
+
+### 6. Buscar sala que não existe (teste 404)
+GET {{baseUrl}}/salas/999
+
+### 7. Atualizar uma sala
+PATCH {{baseUrl}}/salas/{{numeroSala}}
+Content-Type: application/json
+
+{
+  "tipoSala": "Consultório Atualizado"
+}
+
+### 8. Tentar atualizar sala que não existe
+PATCH {{baseUrl}}/salas/999
+Content-Type: application/json
+
+{
+  "tipoSala": "Novo tipo"
+}
+
+### 9. Criar sala duplicada (teste de constraint - deve dar erro 409)
+POST {{baseUrl}}/salas
+Content-Type: application/json
+
+{
+  "numeroSala": 102,
+  "tipoSala": "Duplicada"
+}
+
+### 10. Deletar uma sala
+DELETE {{baseUrl}}/salas/103
+
+### 11. Tentar deletar sala que não existe
+DELETE {{baseUrl}}/salas/999
