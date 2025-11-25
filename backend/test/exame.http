@@ -1,0 +1,57 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cpfPaciente = 12345678901
+@cpfMedico = 55566677788
+@dataHoraCons = 2025-11-26T10:00:00Z
+
+### PASSO 1: Criar primeiro exame
+POST {{baseUrl}}/exames
+Content-Type: application/json
+
+{
+  "tipoExame": "Radiografia de Tórax",
+  "descricao": "Radiografia frontal e lateral",
+  "dataHoraSolicitacao": "2025-11-26T10:00:00Z",
+  "dataHoraRealizacao": "2025-11-26T14:00:00Z",
+  "resultado": "Normal",
+  "observacoes": "Sem alterações detectadas",
+  "dataHoraCons": "2025-11-26T10:00:00Z",
+  "cpfPaciente": "12345678901",
+  "cpfFuncSaude": "55566677788"
+}
+
+### PASSO 2: Criar segundo exame
+POST {{baseUrl}}/exames
+Content-Type: application/json
+
+{
+  "tipoExame": "Hemograma",
+  "descricao": "Contagem de células",
+  "dataHoraSolicitacao": "2025-11-26T10:00:00Z",
+  "dataHoraRealizacao": "2025-11-27T09:00:00Z",
+  "resultado": "Alterado",
+  "observacoes": "Leucócitos ligeiramente elevados",
+  "dataHoraCons": "2025-11-26T10:00:00Z",
+  "cpfPaciente": "12345678901",
+  "cpfFuncSaude": "55566677788"
+}
+
+### PASSO 3: Listar todos
+GET {{baseUrl}}/exames
+
+### PASSO 4: Buscar por ID
+GET {{baseUrl}}/exames/1
+
+### PASSO 5: Buscar por paciente
+GET {{baseUrl}}/exames/paciente/{{cpfPaciente}}
+
+### PASSO 6: Atualizar exame
+PATCH {{baseUrl}}/exames/2
+Content-Type: application/json
+
+{
+  "statusResultado": "Normal - Confirmado"
+}
+  
+### PASSO 7: Deletar exame
+DELETE {{baseUrl}}/exames/1
