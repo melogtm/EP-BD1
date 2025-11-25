@@ -1,0 +1,63 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cpfFuncionario = 11122233344
+
+### PASSO 1: Criar sala (dependência para funcionário)
+POST {{baseUrl}}/salas
+Content-Type: application/json
+
+{
+  "numeroSala": 201,
+  "tipoSala": "Administrativo"
+}
+
+### PASSO 2: Criar pessoa (dependência)
+POST {{baseUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "cpf": "11122233344",
+  "nome": "Carlos Silva Funcionário",
+  "email": "carlos.func@email.com",
+  "genero": "M",
+  "dataNascDia": 20,
+  "dataNascMes": 5,
+  "dataNascAno": 1985,
+  "endRua": "Rua do Trabalho",
+  "endNum": "456",
+  "endBairro": "Centro",
+  "endCidade": "São Paulo",
+  "endUf": "SP",
+  "endPais": "Brasil",
+  "endCep": "01100-000"
+}
+
+### PASSO 3: Criar funcionário
+POST {{baseUrl}}/funcionarios
+Content-Type: application/json
+
+{
+  "cpf": "11122233344",
+  "dataAdmissao": "2023-01-15",
+  "salarioBase": "3500.00",
+  "statusCargo": "Ativo",
+  "horarioTrab": "08:00-17:00",
+  "salaAlocacao": 201
+}
+
+### PASSO 4: Listar todos os funcionários
+GET {{baseUrl}}/funcionarios
+
+### PASSO 5: Buscar funcionário
+GET {{baseUrl}}/funcionarios/{{cpfFuncionario}}
+
+### PASSO 6: Atualizar funcionário
+PATCH {{baseUrl}}/funcionarios/{{cpfFuncionario}}
+Content-Type: application/json
+
+{
+  "salarioBase": "4000.00"
+}
+
+### PASSO 7: Deletar funcionário
+DELETE {{baseUrl}}/funcionarios/{{cpfFuncionario}}

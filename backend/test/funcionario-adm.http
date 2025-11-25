@@ -1,0 +1,63 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cpfFuncAdm = 33344455566
+
+### PASSO 1: Criar sala (dependência)
+POST {{baseUrl}}/salas
+Content-Type: application/json
+
+{
+  "numeroSala": 101,
+  "tipoSala": "Administrativo"
+}
+
+### PASSO 2: Criar pessoa (dependência)
+POST {{baseUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "cpf": "33344455566",
+  "nome": "Pedro Administrativo",
+  "email": "pedro.adm@email.com",
+  "genero": "M",
+  "dataNascDia": 25,
+  "dataNascMes": 12,
+  "dataNascAno": 1990,
+  "endRua": "Rua da Administração",
+  "endNum": "321",
+  "endBairro": "Chácara",
+  "endCidade": "São Paulo",
+  "endUf": "SP",
+  "endPais": "Brasil",
+  "endCep": "01500-000"
+}
+
+### PASSO 3: Criar funcionário (base)
+POST {{baseUrl}}/funcionarios
+Content-Type: application/json
+
+{
+  "cpf": "33344455566",
+  "dataAdmissao": "2023-03-10",
+  "salarioBase": "3200.00",
+  "statusCargo": "Ativo",
+  "horarioTrab": "09:00-18:00",
+  "salaAlocacao": 101
+}
+
+### PASSO 4: Criar funcionário administrativo
+POST {{baseUrl}}/funcionarios-adm
+Content-Type: application/json
+
+{
+  "cpf": "33344455566"
+}
+
+### PASSO 5: Listar funcionários administrativos
+GET {{baseUrl}}/funcionarios-adm
+
+### PASSO 6: Buscar funcionário administrativo
+GET {{baseUrl}}/funcionarios-adm/{{cpfFuncAdm}}
+
+### PASSO 7: Deletar funcionário administrativo
+DELETE {{baseUrl}}/funcionarios-adm/{{cpfFuncAdm}}

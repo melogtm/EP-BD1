@@ -1,0 +1,74 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cpfFuncSaude = 22233344455
+
+### PASSO 1: Criar sala (dependência)
+POST {{baseUrl}}/salas
+Content-Type: application/json
+
+{
+  "numeroSala": 301,
+  "tipoSala": "Consultório"
+}
+
+### PASSO 2: Criar pessoa (dependência)
+POST {{baseUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "cpf": "22233344455",
+  "nome": "Dra. Mariana Médica",
+  "email": "mariana.med@email.com",
+  "genero": "F",
+  "dataNascDia": 10,
+  "dataNascMes": 8,
+  "dataNascAno": 1988,
+  "endRua": "Av. Médica",
+  "endNum": "789",
+  "endBairro": "Vila Mariana",
+  "endCidade": "São Paulo",
+  "endUf": "SP",
+  "endPais": "Brasil",
+  "endCep": "01400-000"
+}
+
+### PASSO 3: Criar funcionário (base)
+POST {{baseUrl}}/funcionarios
+Content-Type: application/json
+
+{
+  "cpf": "22233344455",
+  "dataAdmissao": "2022-06-01",
+  "salarioBase": "6500.00",
+  "statusCargo": "Ativo",
+  "horarioTrab": "07:00-19:00",
+  "salaAlocacao": 301
+}
+
+### PASSO 4: Criar funcionário de saúde
+POST {{baseUrl}}/funcionarios-saude
+Content-Type: application/json
+
+{
+  "cpf": "22233344455",
+  "registroProfissional": "CRM123456",
+  "funcao": "Médica",
+  "especialidade": "Cardiologia"
+}
+
+### PASSO 5: Listar funcionários de saúde
+GET {{baseUrl}}/funcionarios-saude
+
+### PASSO 6: Buscar funcionário de saúde
+GET {{baseUrl}}/funcionarios-saude/{{cpfFuncSaude}}
+
+### PASSO 7: Atualizar funcionário de saúde
+PATCH {{baseUrl}}/funcionarios-saude/{{cpfFuncSaude}}
+Content-Type: application/json
+
+{
+  "especialidade": "Cardiologia Pediátrica"
+}
+
+### PASSO 8: Deletar funcionário de saúde
+DELETE {{baseUrl}}/funcionarios-saude/{{cpfFuncSaude}}
