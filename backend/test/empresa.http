@@ -1,0 +1,36 @@
+@apiUrl = http://localhost:3000
+
+### Criar Empresa
+POST {{apiUrl}}/empresas
+Content-Type: application/json
+
+{
+  "cnpj": "12345678000199",
+  "razaoSocial": "Empresa Teste Ltda",
+  "endRua": "Rua das Empresas",
+  "endNum": "1000",
+  "endBairro": "Centro",
+  "endCidade": "Cidade Exemplo",
+  "endUf": "SP",
+  "endPais": "Brasil",
+  "endCep": "01000-000",
+  "endComplem": "Prédio A"
+}
+
+### Listar Empresas
+GET {{apiUrl}}/empresas
+
+### Buscar Empresa por CNPJ
+GET {{apiUrl}}/empresas/12345678000199
+
+### Atualizar Empresa
+PUT {{apiUrl}}/empresas/12345678000199
+Content-Type: application/json
+
+{
+  "razaoSocial": "Empresa Atualizada Ltda",
+  "endCidade": "Nova Cidade"
+}
+
+### Deletar Empresa
+DELETE {{apiUrl}}/empresas/12345678000199
