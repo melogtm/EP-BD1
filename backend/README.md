@@ -42,7 +42,7 @@ Certifique-se de que o Docker está instalado e rodando.
 Para subir os serviços:
 
 ```bash
-docker compose up -d
+doc
 ```
 
 Para derrubar:

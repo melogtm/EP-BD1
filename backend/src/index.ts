@@ -1,6 +1,6 @@
 import express from "express";
-import { editoraRoutes } from "./routes/editora.routes";
 import * as dotenv from "dotenv";
+import { pessoaRoutes } from "./routes/pessoa.routes";
 
 dotenv.config();
 
@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.use("/editoras", editoraRoutes);
+app.use("/pessoas", pessoaRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);

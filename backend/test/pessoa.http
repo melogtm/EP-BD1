@@ -1,0 +1,41 @@
+@apiUrl = http://localhost:3000
+
+### Criar Pessoa
+POST {{apiUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "cpf": "12345678901",
+  "nome": "Pessoa Teste",
+  "email": "teste@exemplo.com",
+  "genero": "M",
+  "dataNascDia": 1,
+  "dataNascMes": 1,
+  "dataNascAno": 1990,
+  "endRua": "Rua Exemplo",
+  "endNum": "123",
+  "endBairro": "Bairro Legal",
+  "endCidade": "Cidade Exemplo",
+  "endUf": "SP",
+  "endPais": "Brasil",
+  "endCep": "00000-000",
+  "endComplem": "Apto 101"
+}
+
+### Listar Pessoas
+GET {{apiUrl}}/pessoas
+
+### Buscar Pessoa por CPF
+GET {{apiUrl}}/pessoas/12345678901
+
+### Atualizar Pessoa
+PUT {{apiUrl}}/pessoas/12345678901
+Content-Type: application/json
+
+{
+  "email": "novoemail@exemplo.com",
+  "endCidade": "Nova Cidade"
+}
+
+### Deletar Pessoa
+DELETE {{apiUrl}}/pessoas/12345678901

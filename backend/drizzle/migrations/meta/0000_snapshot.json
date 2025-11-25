@@ -1,29 +1,762 @@
 {
-  "id": "f728b2fb-b5fb-44af-ac78-967017227e79",
+  "id": "d519aa5f-ee43-4c8e-8557-17d8220d94f4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.autor": {
-      "name": "autor",
+    "public.altera_produto": {
+      "name": "altera_produto",
       "schema": "",
       "columns": {
-        "rg": {
-          "name": "rg",
+        "cpf_funcionario": {
+          "name": "cpf_funcionario",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prod_id": {
+          "name": "prod_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "datahoramodificacao": {
+          "name": "datahoramodificacao",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_altera_func": {
+          "name": "fk_altera_func",
+          "tableFrom": "altera_produto",
+          "tableTo": "funcionario",
+          "columnsFrom": [
+            "cpf_funcionario"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_altera_prod": {
+          "name": "fk_altera_prod",
+          "tableFrom": "altera_produto",
+          "tableTo": "produto",
+          "columnsFrom": [
+            "prod_id"
+          ],
+          "columnsTo": [
+            "prod_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "altera_produto_cpf_funcionario_prod_id_datahoramodificacao_pk": {
+          "name": "altera_produto_cpf_funcionario_prod_id_datahoramodificacao_pk",
+          "columns": [
+            "cpf_funcionario",
+            "prod_id",
+            "datahoramodificacao"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.consulta": {
+      "name": "consulta",
+      "schema": "",
+      "columns": {
+        "datahoraagendada": {
+          "name": "datahoraagendada",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cpf_funcsaude": {
+          "name": "cpf_funcsaude",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cpf_paciente": {
+          "name": "cpf_paciente",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sala": {
+          "name": "sala",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datahorainicio": {
+          "name": "datahorainicio",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datahorafim": {
+          "name": "datahorafim",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "valoratendimento": {
+          "name": "valoratendimento",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "observacoesclinicas": {
+          "name": "observacoesclinicas",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tipoatendimento": {
+          "name": "tipoatendimento",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "statusatendimento": {
+          "name": "statusatendimento",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_cons_medico": {
+          "name": "fk_cons_medico",
+          "tableFrom": "consulta",
+          "tableTo": "funcionario_saude",
+          "columnsFrom": [
+            "cpf_funcsaude"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_cons_paciente": {
+          "name": "fk_cons_paciente",
+          "tableFrom": "consulta",
+          "tableTo": "paciente",
+          "columnsFrom": [
+            "cpf_paciente"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_cons_sala": {
+          "name": "fk_cons_sala",
+          "tableFrom": "consulta",
+          "tableTo": "local_sala",
+          "columnsFrom": [
+            "sala"
+          ],
+          "columnsTo": [
+            "numerosala"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "consulta_datahoraagendada_cpf_funcsaude_cpf_paciente_pk": {
+          "name": "consulta_datahoraagendada_cpf_funcsaude_cpf_paciente_pk",
+          "columns": [
+            "datahoraagendada",
+            "cpf_funcsaude",
+            "cpf_paciente"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.consulta_diagnostico": {
+      "name": "consulta_diagnostico",
+      "schema": "",
+      "columns": {
+        "cid": {
+          "name": "cid",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "datahora_cons": {
+          "name": "datahora_cons",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cpf_paciente": {
+          "name": "cpf_paciente",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cpf_funcsaude": {
+          "name": "cpf_funcsaude",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_consdiag_cid": {
+          "name": "fk_consdiag_cid",
+          "tableFrom": "consulta_diagnostico",
+          "tableTo": "diagnostico",
+          "columnsFrom": [
+            "cid"
+          ],
+          "columnsTo": [
+            "cid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_consdiag_cons": {
+          "name": "fk_consdiag_cons",
+          "tableFrom": "consulta_diagnostico",
+          "tableTo": "consulta",
+          "columnsFrom": [
+            "datahora_cons",
+            "cpf_funcsaude",
+            "cpf_paciente"
+          ],
+          "columnsTo": [
+            "datahoraagendada",
+            "cpf_funcsaude",
+            "cpf_paciente"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "consulta_diagnostico_cid_datahora_cons_cpf_paciente_cpf_funcsaude_pk": {
+          "name": "consulta_diagnostico_cid_datahora_cons_cpf_paciente_cpf_funcsaude_pk",
+          "columns": [
+            "cid",
+            "datahora_cons",
+            "cpf_paciente",
+            "cpf_funcsaude"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.diagnostico": {
+      "name": "diagnostico",
+      "schema": "",
+      "columns": {
+        "cid": {
+          "name": "cid",
+          "type": "varchar(20)",
           "primaryKey": true,
           "notNull": true
         },
-        "nome": {
-          "name": "nome",
+        "descricao": {
+          "name": "descricao",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.empresa": {
+      "name": "empresa",
+      "schema": "",
+      "columns": {
+        "cnpj": {
+          "name": "cnpj",
+          "type": "varchar(18)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "razao_social": {
+          "name": "razao_social",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_rua": {
+          "name": "end_rua",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_num": {
+          "name": "end_num",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_bairro": {
+          "name": "end_bairro",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_cidade": {
+          "name": "end_cidade",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_uf": {
+          "name": "end_uf",
+          "type": "char(2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_pais": {
+          "name": "end_pais",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_cep": {
+          "name": "end_cep",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_complem": {
+          "name": "end_complem",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.exame": {
+      "name": "exame",
+      "schema": "",
+      "columns": {
+        "exameid": {
+          "name": "exameid",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "tipoexame": {
+          "name": "tipoexame",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datapedido": {
+          "name": "datapedido",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datahorarealiz": {
+          "name": "datahorarealiz",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "valorexame": {
+          "name": "valorexame",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "laudo": {
+          "name": "laudo",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "statusresultado": {
+          "name": "statusresultado",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datahora_cons": {
+          "name": "datahora_cons",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cpf_paciente": {
+          "name": "cpf_paciente",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cpf_funcsaude_solicitou": {
+          "name": "cpf_funcsaude_solicitou",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cpf_funcsaude_realizou": {
+          "name": "cpf_funcsaude_realizou",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sala": {
+          "name": "sala",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_exame_consulta": {
+          "name": "fk_exame_consulta",
+          "tableFrom": "exame",
+          "tableTo": "consulta",
+          "columnsFrom": [
+            "datahora_cons",
+            "cpf_funcsaude_solicitou",
+            "cpf_paciente"
+          ],
+          "columnsTo": [
+            "datahoraagendada",
+            "cpf_funcsaude",
+            "cpf_paciente"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_exame_realiza": {
+          "name": "fk_exame_realiza",
+          "tableFrom": "exame",
+          "tableTo": "funcionario_saude",
+          "columnsFrom": [
+            "cpf_funcsaude_realizou"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_exame_sala": {
+          "name": "fk_exame_sala",
+          "tableFrom": "exame",
+          "tableTo": "local_sala",
+          "columnsFrom": [
+            "sala"
+          ],
+          "columnsTo": [
+            "numerosala"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.funcionario": {
+      "name": "funcionario",
+      "schema": "",
+      "columns": {
+        "cpf": {
+          "name": "cpf",
+          "type": "varchar(14)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "dataadmissao": {
+          "name": "dataadmissao",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salariobase": {
+          "name": "salariobase",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "statuscargo": {
+          "name": "statuscargo",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "horariotrab": {
+          "name": "horariotrab",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salaalocacao": {
+          "name": "salaalocacao",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_func_pessoa": {
+          "name": "fk_func_pessoa",
+          "tableFrom": "funcionario",
+          "tableTo": "pessoa",
+          "columnsFrom": [
+            "cpf"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_func_sala": {
+          "name": "fk_func_sala",
+          "tableFrom": "funcionario",
+          "tableTo": "local_sala",
+          "columnsFrom": [
+            "salaalocacao"
+          ],
+          "columnsTo": [
+            "numerosala"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.funcionario_adm": {
+      "name": "funcionario_adm",
+      "schema": "",
+      "columns": {
+        "cpf": {
+          "name": "cpf",
+          "type": "varchar(14)",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_funcadm_func": {
+          "name": "fk_funcadm_func",
+          "tableFrom": "funcionario_adm",
+          "tableTo": "funcionario",
+          "columnsFrom": [
+            "cpf"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.funcionario_saude": {
+      "name": "funcionario_saude",
+      "schema": "",
+      "columns": {
+        "cpf": {
+          "name": "cpf",
+          "type": "varchar(14)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "registroprofissional": {
+          "name": "registroprofissional",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "funcao": {
+          "name": "funcao",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "especialidade": {
+          "name": "especialidade",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_funcsauDe_func": {
+          "name": "fk_funcsauDe_func",
+          "tableFrom": "funcionario_saude",
+          "tableTo": "funcionario",
+          "columnsFrom": [
+            "cpf"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.item_receita": {
+      "name": "item_receita",
+      "schema": "",
+      "columns": {
+        "receitaid": {
+          "name": "receitaid",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "endereco": {
-          "name": "endereco",
-          "type": "text",
+        "nomemedicamentogenerico": {
+          "name": "nomemedicamentogenerico",
+          "type": "varchar(255)",
           "primaryKey": false,
+          "notNull": true
+        },
+        "posologia": {
+          "name": "posologia",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_item_receita": {
+          "name": "fk_item_receita",
+          "tableFrom": "item_receita",
+          "tableTo": "receita",
+          "columnsFrom": [
+            "receitaid"
+          ],
+          "columnsTo": [
+            "receitaid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_item_medicamento": {
+          "name": "fk_item_medicamento",
+          "tableFrom": "item_receita",
+          "tableTo": "medicamento",
+          "columnsFrom": [
+            "nomemedicamentogenerico"
+          ],
+          "columnsTo": [
+            "nome"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "item_receita_receitaid_nomemedicamentogenerico_pk": {
+          "name": "item_receita_receitaid_nomemedicamentogenerico_pk",
+          "columns": [
+            "receitaid",
+            "nomemedicamentogenerico"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.local_sala": {
+      "name": "local_sala",
+      "schema": "",
+      "columns": {
+        "numerosala": {
+          "name": "numerosala",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "tiposala": {
+          "name": "tiposala",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.medicamento": {
+      "name": "medicamento",
+      "schema": "",
+      "columns": {
+        "nome": {
+          "name": "nome",
+          "type": "varchar(255)",
+          "primaryKey": true,
           "notNull": true
         }
       },
@@ -35,97 +768,31 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public._AutorToLivro": {
-      "name": "_AutorToLivro",
+    "public.operadora_plano_de_saude": {
+      "name": "operadora_plano_de_saude",
       "schema": "",
       "columns": {
-        "A": {
-          "name": "A",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "B": {
-          "name": "B",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "_AutorToLivro_A_autor_rg_fk": {
-          "name": "_AutorToLivro_A_autor_rg_fk",
-          "tableFrom": "_AutorToLivro",
-          "tableTo": "autor",
-          "columnsFrom": [
-            "A"
-          ],
-          "columnsTo": [
-            "rg"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        },
-        "_AutorToLivro_B_livros_isbn_fk": {
-          "name": "_AutorToLivro_B_livros_isbn_fk",
-          "tableFrom": "_AutorToLivro",
-          "tableTo": "livros",
-          "columnsFrom": [
-            "B"
-          ],
-          "columnsTo": [
-            "isbn"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        }
-      },
-      "compositePrimaryKeys": {
-        "_AutorToLivro_A_B_pk": {
-          "name": "_AutorToLivro_A_B_pk",
-          "columns": [
-            "A",
-            "B"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.contratada": {
-      "name": "contratada",
-      "schema": "",
-      "columns": {
-        "grafica_id": {
-          "name": "grafica_id",
-          "type": "integer",
+        "cnpj": {
+          "name": "cnpj",
+          "type": "varchar(18)",
           "primaryKey": true,
           "notNull": true
-        },
-        "endereco": {
-          "name": "endereco",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "contratada_grafica_id_grafica_id_fk": {
-          "name": "contratada_grafica_id_grafica_id_fk",
-          "tableFrom": "contratada",
-          "tableTo": "grafica",
+        "fk_operadora_emp": {
+          "name": "fk_operadora_emp",
+          "tableFrom": "operadora_plano_de_saude",
+          "tableTo": "empresa",
           "columnsFrom": [
-            "grafica_id"
+            "cnpj"
           ],
           "columnsTo": [
-            "id"
+            "cnpj"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -134,137 +801,657 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.contrato": {
-      "name": "contrato",
+    "public.paciente": {
+      "name": "paciente",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
+        "cpf": {
+          "name": "cpf",
+          "type": "varchar(14)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "tiposanguineo": {
+          "name": "tiposanguineo",
+          "type": "varchar(5)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datafalec": {
+          "name": "datafalec",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "profissao": {
+          "name": "profissao",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "statuscadastro": {
+          "name": "statuscadastro",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cpf_resp": {
+          "name": "cpf_resp",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_paciente_pessoa": {
+          "name": "fk_paciente_pessoa",
+          "tableFrom": "paciente",
+          "tableTo": "pessoa",
+          "columnsFrom": [
+            "cpf"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_paciente_resp": {
+          "name": "fk_paciente_resp",
+          "tableFrom": "paciente",
+          "tableTo": "pessoa",
+          "columnsFrom": [
+            "cpf_resp"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.paciente_possui_plano": {
+      "name": "paciente_possui_plano",
+      "schema": "",
+      "columns": {
+        "cpf_paciente": {
+          "name": "cpf_paciente",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "planoid": {
+          "name": "planoid",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "numerocarteirinha": {
+          "name": "numerocarteirinha",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_possui_paciente": {
+          "name": "fk_possui_paciente",
+          "tableFrom": "paciente_possui_plano",
+          "tableTo": "paciente",
+          "columnsFrom": [
+            "cpf_paciente"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_possui_plano": {
+          "name": "fk_possui_plano",
+          "tableFrom": "paciente_possui_plano",
+          "tableTo": "plano_de_saude",
+          "columnsFrom": [
+            "planoid"
+          ],
+          "columnsTo": [
+            "planoid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "paciente_possui_plano_cpf_paciente_planoid_pk": {
+          "name": "paciente_possui_plano_cpf_paciente_planoid_pk",
+          "columns": [
+            "cpf_paciente",
+            "planoid"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.pagamento": {
+      "name": "pagamento",
+      "schema": "",
+      "columns": {
+        "pagamentoid": {
+          "name": "pagamentoid",
+          "type": "integer",
           "primaryKey": true,
           "notNull": true
         },
         "valor": {
           "name": "valor",
-          "type": "numeric(65, 30)",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "nome_responsavel": {
-          "name": "nome_responsavel",
-          "type": "text",
+        "datapag": {
+          "name": "datapag",
+          "type": "date",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "grafica_cont_id": {
-          "name": "grafica_cont_id",
-          "type": "integer",
+        "coparticipacao": {
+          "name": "coparticipacao",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "contrato_grafica_cont_id_contratada_grafica_id_fk": {
-          "name": "contrato_grafica_cont_id_contratada_grafica_id_fk",
-          "tableFrom": "contrato",
-          "tableTo": "contratada",
-          "columnsFrom": [
-            "grafica_cont_id"
-          ],
-          "columnsTo": [
-            "grafica_id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.Editora": {
-      "name": "Editora",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
+          "notNull": false
         },
-        "nome": {
-          "name": "nome",
-          "type": "text",
+        "status_pagamento": {
+          "name": "status_pagamento",
+          "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "endereco": {
-          "name": "endereco",
-          "type": "text",
+        "desconto": {
+          "name": "desconto",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.grafica": {
-      "name": "grafica",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
+          "notNull": false
         },
-        "nome": {
-          "name": "nome",
-          "type": "text",
+        "datahora_cons": {
+          "name": "datahora_cons",
+          "type": "timestamp (3)",
           "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.imprime": {
-      "name": "imprime",
-      "schema": "",
-      "columns": {
-        "lisbn": {
-          "name": "lisbn",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "grafica_id": {
-          "name": "grafica_id",
-          "type": "integer",
+        "cpf_paciente": {
+          "name": "cpf_paciente",
+          "type": "varchar(14)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "nto_copias": {
-          "name": "nto_copias",
+        "cpf_funcsaude": {
+          "name": "cpf_funcsaude",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "exameid": {
+          "name": "exameid",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "data_entrega": {
-          "name": "data_entrega",
+        "planoid": {
+          "name": "planoid",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cpf_pagador": {
+          "name": "cpf_pagador",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_pag_consulta": {
+          "name": "fk_pag_consulta",
+          "tableFrom": "pagamento",
+          "tableTo": "consulta",
+          "columnsFrom": [
+            "datahora_cons",
+            "cpf_funcsaude",
+            "cpf_paciente"
+          ],
+          "columnsTo": [
+            "datahoraagendada",
+            "cpf_funcsaude",
+            "cpf_paciente"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_pag_exame": {
+          "name": "fk_pag_exame",
+          "tableFrom": "pagamento",
+          "tableTo": "exame",
+          "columnsFrom": [
+            "exameid"
+          ],
+          "columnsTo": [
+            "exameid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_pag_plano": {
+          "name": "fk_pag_plano",
+          "tableFrom": "pagamento",
+          "tableTo": "plano_de_saude",
+          "columnsFrom": [
+            "planoid"
+          ],
+          "columnsTo": [
+            "planoid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_pag_pagador": {
+          "name": "fk_pag_pagador",
+          "tableFrom": "pagamento",
+          "tableTo": "pessoa",
+          "columnsFrom": [
+            "cpf_pagador"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "chk_origem_pagamento": {
+          "name": "chk_origem_pagamento",
+          "value": "\n    (\n      \"pagamento\".\"datahora_cons\" IS NOT NULL\n      AND \"pagamento\".\"cpf_paciente\" IS NOT NULL\n      AND \"pagamento\".\"cpf_funcsaude\" IS NOT NULL\n      AND \"pagamento\".\"exameid\" IS NULL\n    )\n    OR\n    (\n      \"pagamento\".\"datahora_cons\" IS NULL\n      AND \"pagamento\".\"cpf_paciente\" IS NULL\n      AND \"pagamento\".\"cpf_funcsaude\" IS NULL\n      AND \"pagamento\".\"exameid\" IS NOT NULL\n    )\n  "
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.pessoa": {
+      "name": "pessoa",
+      "schema": "",
+      "columns": {
+        "cpf": {
+          "name": "cpf",
+          "type": "varchar(14)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nome": {
+          "name": "nome",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "genero": {
+          "name": "genero",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datanasc_dia": {
+          "name": "datanasc_dia",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datanasc_mes": {
+          "name": "datanasc_mes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datanasc_ano": {
+          "name": "datanasc_ano",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_rua": {
+          "name": "end_rua",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_num": {
+          "name": "end_num",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_bairro": {
+          "name": "end_bairro",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_cidade": {
+          "name": "end_cidade",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_uf": {
+          "name": "end_uf",
+          "type": "char(2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_pais": {
+          "name": "end_pais",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_cep": {
+          "name": "end_cep",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_complem": {
+          "name": "end_complem",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.plano_de_saude": {
+      "name": "plano_de_saude",
+      "schema": "",
+      "columns": {
+        "planoid": {
+          "name": "planoid",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nomeplano": {
+          "name": "nomeplano",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "modalidade": {
+          "name": "modalidade",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cnpj_operadora": {
+          "name": "cnpj_operadora",
+          "type": "varchar(18)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_plano_operadora": {
+          "name": "fk_plano_operadora",
+          "tableFrom": "plano_de_saude",
+          "tableTo": "operadora_plano_de_saude",
+          "columnsFrom": [
+            "cnpj_operadora"
+          ],
+          "columnsTo": [
+            "cnpj"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.plantao": {
+      "name": "plantao",
+      "schema": "",
+      "columns": {
+        "plantaoid": {
+          "name": "plantaoid",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "datahorainicio": {
+          "name": "datahorainicio",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datahorafim": {
+          "name": "datahorafim",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.prest_terceirizado": {
+      "name": "prest_terceirizado",
+      "schema": "",
+      "columns": {
+        "cpf": {
+          "name": "cpf",
+          "type": "varchar(14)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "funcao": {
+          "name": "funcao",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cnpj_empresa": {
+          "name": "cnpj_empresa",
+          "type": "varchar(18)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_terc_pessoa": {
+          "name": "fk_terc_pessoa",
+          "tableFrom": "prest_terceirizado",
+          "tableTo": "pessoa",
+          "columnsFrom": [
+            "cpf"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_terc_empresa": {
+          "name": "fk_terc_empresa",
+          "tableFrom": "prest_terceirizado",
+          "tableTo": "empresa",
+          "columnsFrom": [
+            "cnpj_empresa"
+          ],
+          "columnsTo": [
+            "cnpj"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.produto": {
+      "name": "produto",
+      "schema": "",
+      "columns": {
+        "prod_id": {
+          "name": "prod_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "descricao": {
+          "name": "descricao",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "validade": {
+          "name": "validade",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fabricante": {
+          "name": "fabricante",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cpf_cadastrou": {
+          "name": "cpf_cadastrou",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cnpj_fornecedor": {
+          "name": "cnpj_fornecedor",
+          "type": "varchar(18)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sala": {
+          "name": "sala",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_prod_adm": {
+          "name": "fk_prod_adm",
+          "tableFrom": "produto",
+          "tableTo": "funcionario_adm",
+          "columnsFrom": [
+            "cpf_cadastrou"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_prod_forn": {
+          "name": "fk_prod_forn",
+          "tableFrom": "produto",
+          "tableTo": "empresa",
+          "columnsFrom": [
+            "cnpj_fornecedor"
+          ],
+          "columnsTo": [
+            "cnpj"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_prod_sala": {
+          "name": "fk_prod_sala",
+          "tableFrom": "produto",
+          "tableTo": "local_sala",
+          "columnsFrom": [
+            "sala"
+          ],
+          "columnsTo": [
+            "numerosala"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.prontuario": {
+      "name": "prontuario",
+      "schema": "",
+      "columns": {
+        "cpf_paciente": {
+          "name": "cpf_paciente",
+          "type": "varchar(14)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "datahoracriacao": {
+          "name": "datahoracriacao",
+          "type": "timestamp (3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cpf_atualizou": {
+          "name": "cpf_atualizou",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "datahoraatualizacao": {
+          "name": "datahoraatualizacao",
           "type": "timestamp (3)",
           "primaryKey": false,
           "notNull": false
@@ -272,39 +1459,91 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "imprime_lisbn_livros_isbn_fk": {
-          "name": "imprime_lisbn_livros_isbn_fk",
-          "tableFrom": "imprime",
-          "tableTo": "livros",
+        "fk_pront_paciente": {
+          "name": "fk_pront_paciente",
+          "tableFrom": "prontuario",
+          "tableTo": "paciente",
           "columnsFrom": [
-            "lisbn"
+            "cpf_paciente"
           ],
           "columnsTo": [
-            "isbn"
+            "cpf"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
-        "imprime_grafica_id_grafica_id_fk": {
-          "name": "imprime_grafica_id_grafica_id_fk",
-          "tableFrom": "imprime",
-          "tableTo": "grafica",
+        "fk_pront_medico": {
+          "name": "fk_pront_medico",
+          "tableFrom": "prontuario",
+          "tableTo": "funcionario_saude",
           "columnsFrom": [
-            "grafica_id"
+            "cpf_atualizou"
           ],
           "columnsTo": [
-            "id"
+            "cpf"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.realiza_plantao": {
+      "name": "realiza_plantao",
+      "schema": "",
+      "columns": {
+        "cpf_funcsaude": {
+          "name": "cpf_funcsaude",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "plantaoid": {
+          "name": "plantaoid",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_realiza_func": {
+          "name": "fk_realiza_func",
+          "tableFrom": "realiza_plantao",
+          "tableTo": "funcionario_saude",
+          "columnsFrom": [
+            "cpf_funcsaude"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_realiza_plant": {
+          "name": "fk_realiza_plant",
+          "tableFrom": "realiza_plantao",
+          "tableTo": "plantao",
+          "columnsFrom": [
+            "plantaoid"
+          ],
+          "columnsTo": [
+            "plantaoid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "imprime_lisbn_grafica_id_pk": {
-          "name": "imprime_lisbn_grafica_id_pk",
+        "realiza_plantao_cpf_funcsaude_plantaoid_pk": {
+          "name": "realiza_plantao_cpf_funcsaude_plantaoid_pk",
           "columns": [
-            "lisbn",
-            "grafica_id"
+            "cpf_funcsaude",
+            "plantaoid"
           ]
         }
       },
@@ -313,49 +1552,71 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.livros": {
-      "name": "livros",
+    "public.receita": {
+      "name": "receita",
       "schema": "",
       "columns": {
-        "isbn": {
-          "name": "isbn",
-          "type": "text",
+        "receitaid": {
+          "name": "receitaid",
+          "type": "integer",
           "primaryKey": true,
           "notNull": true
         },
-        "titulo": {
-          "name": "titulo",
+        "validade": {
+          "name": "validade",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dataemissao": {
+          "name": "dataemissao",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "observacoes": {
+          "name": "observacoes",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "data_de_publicacao": {
-          "name": "data_de_publicacao",
+        "datahora_cons": {
+          "name": "datahora_cons",
           "type": "timestamp (3)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "editora_id": {
-          "name": "editora_id",
-          "type": "integer",
+        "cpf_paciente": {
+          "name": "cpf_paciente",
+          "type": "varchar(14)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "cpf_funcsaude": {
+          "name": "cpf_funcsaude",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "livros_editora_id_Editora_id_fk": {
-          "name": "livros_editora_id_Editora_id_fk",
-          "tableFrom": "livros",
-          "tableTo": "Editora",
+        "fk_receita_consulta": {
+          "name": "fk_receita_consulta",
+          "tableFrom": "receita",
+          "tableTo": "consulta",
           "columnsFrom": [
-            "editora_id"
+            "datahora_cons",
+            "cpf_funcsaude",
+            "cpf_paciente"
           ],
           "columnsTo": [
-            "id"
+            "datahoraagendada",
+            "cpf_funcsaude",
+            "cpf_paciente"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -364,34 +1625,123 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.particular": {
-      "name": "particular",
+    "public.telefone_empresa": {
+      "name": "telefone_empresa",
       "schema": "",
       "columns": {
-        "grafica_id": {
-          "name": "grafica_id",
-          "type": "integer",
-          "primaryKey": true,
+        "cnpj": {
+          "name": "cnpj",
+          "type": "varchar(18)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "codpais": {
+          "name": "codpais",
+          "type": "varchar(5)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ddd": {
+          "name": "ddd",
+          "type": "varchar(5)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "telefone": {
+          "name": "telefone",
+          "type": "varchar(20)",
+          "primaryKey": false,
           "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "particular_grafica_id_grafica_id_fk": {
-          "name": "particular_grafica_id_grafica_id_fk",
-          "tableFrom": "particular",
-          "tableTo": "grafica",
+        "fk_tel_empresa": {
+          "name": "fk_tel_empresa",
+          "tableFrom": "telefone_empresa",
+          "tableTo": "empresa",
           "columnsFrom": [
-            "grafica_id"
+            "cnpj"
           ],
           "columnsTo": [
-            "id"
+            "cnpj"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "telefone_empresa_cnpj_codpais_ddd_telefone_pk": {
+          "name": "telefone_empresa_cnpj_codpais_ddd_telefone_pk",
+          "columns": [
+            "cnpj",
+            "codpais",
+            "ddd",
+            "telefone"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.telefone_pessoa": {
+      "name": "telefone_pessoa",
+      "schema": "",
+      "columns": {
+        "cpf": {
+          "name": "cpf",
+          "type": "varchar(14)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "codpais": {
+          "name": "codpais",
+          "type": "varchar(5)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ddd": {
+          "name": "ddd",
+          "type": "varchar(5)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "telefone": {
+          "name": "telefone",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_tel_pessoa": {
+          "name": "fk_tel_pessoa",
+          "tableFrom": "telefone_pessoa",
+          "tableTo": "pessoa",
+          "columnsFrom": [
+            "cpf"
+          ],
+          "columnsTo": [
+            "cpf"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "telefone_pessoa_cpf_codpais_ddd_telefone_pk": {
+          "name": "telefone_pessoa_cpf_codpais_ddd_telefone_pk",
+          "columns": [
+            "cpf",
+            "codpais",
+            "ddd",
+            "telefone"
+          ]
+        }
+      },
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
