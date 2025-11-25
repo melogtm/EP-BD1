@@ -1,0 +1,120 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cpfPaciente = 12345678901
+
+### PASSO 1: Criar pessoa primeiro (dependência)
+POST {{baseUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "cpf": "12345678901",
+  "nome": "João Silva Paciente",
+  "email": "joao.paciente@email.com",
+  "genero": "M",
+  "dataNascDia": 15,
+  "dataNascMes": 3,
+  "dataNascAno": 1990,
+  "endRua": "Rua das Flores",
+  "endNum": "123",
+  "endBairro": "Jardins",
+  "endCidade": "São Paulo",
+  "endUf": "SP",
+  "endPais": "Brasil",
+  "endCep": "01000-000",
+  "endComplem": "Apto 42"
+}
+
+### PASSO 2: Criar paciente
+POST {{baseUrl}}/pacientes
+Content-Type: application/json
+
+{
+  "cpf": "12345678901",
+  "tipoSanguineo": "O+",
+  "profissao": "Engenheiro",
+  "statusCadastro": "Ativo"
+}
+
+### PASSO 3.a: Criar outra pessoa
+POST {{baseUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "cpf": "98765432100",
+  "nome": "João Silva Paciente 2",
+  "email": "joao.paciente2@email.com",
+  "genero": "F",
+  "dataNascDia": 15,
+  "dataNascMes": 3,
+  "dataNascAno": 1990,
+  "endRua": "Rua das Flores",
+  "endNum": "123",
+  "endBairro": "Jardins",
+  "endCidade": "São Paulo",
+  "endUf": "SP",
+  "endPais": "Brasil",
+  "endCep": "01000-000",
+  "endComplem": "Apto 42"
+}
+
+### PASSO 3.b: Criar outro paciente
+POST {{baseUrl}}/pacientes
+Content-Type: application/json
+
+{
+  "cpf": "98765432100",
+  "tipoSanguineo": "A-",
+  "profissao": "Médico",
+  "statusCadastro": "Ativo"
+}
+
+### PASSO 4: Listar todos os pacientes
+GET {{baseUrl}}/pacientes
+
+### PASSO 5: Buscar paciente por CPF
+GET {{baseUrl}}/pacientes/{{cpfPaciente}}
+
+### PASSO 6: Buscar paciente que não existe (teste 404)
+GET {{baseUrl}}/pacientes/11111111111
+
+### PASSO 7: Atualizar paciente
+PATCH {{baseUrl}}/pacientes/{{cpfPaciente}}
+Content-Type: application/json
+
+{
+  "tipoSanguineo": "O-",
+  "statusCadastro": "Inativo"
+}
+
+### PASSO 8: Tentar atualizar paciente que não existe
+PATCH {{baseUrl}}/pacientes/11111111111
+Content-Type: application/json
+
+{
+  "profissao": "Advogado"
+}
+
+### PASSO 9: Tentar criar paciente com CPF que não existe em pessoa (teste FK - deve dar erro 400)
+POST {{baseUrl}}/pacientes
+Content-Type: application/json
+
+{
+  "cpf": "99999999999",
+  "tipoSanguineo": "B+",
+  "profissao": "Professor"
+}
+
+### PASSO 10: Tentar criar paciente duplicado (teste constraint - deve dar erro 409)
+POST {{baseUrl}}/pacientes
+Content-Type: application/json
+
+{
+  "cpf": "12345678901",
+  "tipoSanguineo": "AB-"
+}
+
+### PASSO 11: Deletar paciente
+DELETE {{baseUrl}}/pacientes/98765432100
+
+### PASSO 12: Tentar deletar paciente que não existe
+DELETE {{baseUrl}}/pacientes/11111111111
