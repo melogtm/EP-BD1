@@ -5,7 +5,7 @@ POST {{apiUrl}}/pessoas
 Content-Type: application/json
 
 {
-  "cpf": "12345678901",
+  "cpf": "12345678900",
   "nome": "Pessoa Teste",
   "email": "teste@exemplo.com",
   "genero": "M",

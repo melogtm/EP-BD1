@@ -10,6 +10,7 @@ import {
   primaryKey,
   check,
   foreignKey,
+  serial,
 } from "drizzle-orm/pg-core";
 import { relations, sql } from "drizzle-orm";
 
@@ -173,7 +174,7 @@ export const prestTerceirizado = pgTable(
 export const produto = pgTable(
   "produto",
   {
-    prodId: integer("prod_id").primaryKey(),
+    prodId: serial("prod_id").primaryKey(),
     descricao: varchar("descricao", { length: 255 }),
     validade: date("validade"),
     fabricante: varchar("fabricante", { length: 100 }),
@@ -217,7 +218,7 @@ export const operadoraPlanoSaude = pgTable(
 export const planoDeSaude = pgTable(
   "plano_de_saude",
   {
-    planoId: integer("planoid").primaryKey(),
+    planoId: serial("planoid").primaryKey(),
     nomePlano: varchar("nomeplano", { length: 100 }),
     modalidade: varchar("modalidade", { length: 50 }),
     cnpjOperadora: varchar("cnpj_operadora", { length: 18 }),
@@ -341,7 +342,7 @@ export const consulta = pgTable(
 export const receita = pgTable(
   "receita",
   {
-    receitaId: integer("receitaid").primaryKey(),
+    receitaId: serial("receitaid").primaryKey(),
     validade: date("validade"),
     dataEmissao: date("dataemissao"),
     observacoes: text("observacoes"),
@@ -365,7 +366,7 @@ export const receita = pgTable(
 export const exame = pgTable(
   "exame",
   {
-    exameId: integer("exameid").primaryKey(),
+    exameId: serial("exameid").primaryKey(),
     tipoExame: varchar("tipoexame", { length: 100 }),
     dataPedido: date("datapedido"),
     dataHoraRealiz: timestamp("datahorarealiz", { precision: 3 }),
@@ -410,7 +411,7 @@ export const exame = pgTable(
 export const pagamento = pgTable(
   "pagamento",
   {
-    pagamentoId: integer("pagamentoid").primaryKey(),
+    pagamentoId: serial("pagamentoid").primaryKey(),
     valor: decimal("valor", { precision: 10, scale: 2 }),
     dataPag: date("datapag"),
     coparticipacao: decimal("coparticipacao", { precision: 10, scale: 2 }),
@@ -475,7 +476,7 @@ export const pagamento = pgTable(
 export const itemReceita = pgTable(
   "item_receita",
   {
-    receitaId: integer("receitaid").notNull(),
+    receitaId: serial("receitaid").notNull(),
     nomeMedicamentoGenerico: varchar("nomemedicamentogenerico", {
       length: 255,
     }).notNull(),
@@ -503,7 +504,7 @@ export const pacientePossuiPlano = pgTable(
   "paciente_possui_plano",
   {
     cpfPaciente: varchar("cpf_paciente", { length: 14 }).notNull(),
-    planoId: integer("planoid").notNull(),
+    planoId: serial("planoid").notNull(),
     numeroCarteirinha: varchar("numerocarteirinha", { length: 50 }),
   },
   (table) => ({
@@ -526,7 +527,7 @@ export const realizaPlantao = pgTable(
   "realiza_plantao",
   {
     cpfFuncSaude: varchar("cpf_funcsaude", { length: 14 }).notNull(),
-    plantaoId: integer("plantaoid").notNull(),
+    plantaoId: serial("plantaoid").notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.cpfFuncSaude, table.plantaoId] }),
@@ -548,7 +549,7 @@ export const alteraProduto = pgTable(
   "altera_produto",
   {
     cpfFuncionario: varchar("cpf_funcionario", { length: 14 }).notNull(),
-    prodId: integer("prod_id").notNull(),
+    prodId: serial("prod_id").notNull(),
     dataHoraModificacao: timestamp("datahoramodificacao", {
       precision: 3,
     }).notNull(),

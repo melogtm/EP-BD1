@@ -1,5 +1,5 @@
 {
-  "id": "d519aa5f-ee43-4c8e-8557-17d8220d94f4",
+  "id": "beb0b6bf-cb8d-4a45-a46f-3676c23469b4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -16,7 +16,7 @@
         },
         "prod_id": {
           "name": "prod_id",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
@@ -375,7 +375,7 @@
       "columns": {
         "exameid": {
           "name": "exameid",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -664,7 +664,7 @@
       "columns": {
         "receitaid": {
           "name": "receitaid",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
@@ -889,7 +889,7 @@
         },
         "planoid": {
           "name": "planoid",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },
@@ -949,7 +949,7 @@
       "columns": {
         "pagamentoid": {
           "name": "pagamentoid",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -1199,7 +1199,7 @@
       "columns": {
         "planoid": {
           "name": "planoid",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -1339,7 +1339,7 @@
       "columns": {
         "prod_id": {
           "name": "prod_id",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
@@ -1504,7 +1504,7 @@
         },
         "plantaoid": {
           "name": "plantaoid",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         }
@@ -1558,7 +1558,7 @@
       "columns": {
         "receitaid": {
           "name": "receitaid",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },

@@ -1,12 +1,11 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db/index";
 import { pessoa } from "../db/schemas/schemas";
-
-type Pessoa = typeof pessoa.$inferSelect;
-type NewPessoa = typeof pessoa.$inferInsert;
+import type { Pessoa, PessoaInsert } from "../db/schemas/schemas.types";
+import { NotFoundError } from "../errors/NotFoundError";
 
 export class PessoaRepository {
-  async create(data: NewPessoa): Promise<Pessoa> {
+  async create(data: PessoaInsert): Promise<Pessoa> {
     try {
       const [result] = await db.insert(pessoa).values(data).returning();
       if (!result) throw new Error("Falha ao criar pessoa");
@@ -36,14 +35,14 @@ export class PessoaRepository {
     }
   }
 
-  async update(cpf: string, data: Partial<NewPessoa>): Promise<Pessoa> {
+  async update(cpf: string, data: Partial<PessoaInsert>): Promise<Pessoa> {
     try {
       const results = await db
         .update(pessoa)
         .set(data)
         .where(eq(pessoa.cpf, cpf))
         .returning();
-      if (!results[0]) throw new Error(`Pessoa com CPF ${cpf} não encontrada`);
+      if (!results[0]) throw new NotFoundError(`Pessoa com CPF ${cpf} não encontrada`);
       return results[0];
     } catch (error) {
       console.error(`Erro no update Pessoa com CPF=${cpf}:`, error);
@@ -57,7 +56,7 @@ export class PessoaRepository {
         .delete(pessoa)
         .where(eq(pessoa.cpf, cpf))
         .returning();
-      if (!results[0]) throw new Error(`Pessoa com CPF ${cpf} não encontrada`);
+      if (!results[0]) throw new NotFoundError(`Pessoa com CPF ${cpf} não encontrada`);
       return results[0];
     } catch (error) {
       console.error(`Erro no delete Pessoa com CPF=${cpf}:`, error);

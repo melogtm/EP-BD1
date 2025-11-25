@@ -1,12 +1,11 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db/index";
 import { empresa } from "../db/schemas/schemas";
-
-type Empresa = typeof empresa.$inferSelect;
-type NewEmpresa = typeof empresa.$inferInsert;
+import type { Empresa, EmpresaInsert } from "../db/schemas/schemas.types";
+import { NotFoundError } from "../errors/NotFoundError";
 
 export class EmpresaRepository {
-  async create(data: NewEmpresa): Promise<Empresa> {
+  async create(data: EmpresaInsert): Promise<Empresa> {
     try {
       const [result] = await db.insert(empresa).values(data).returning();
       if (!result) throw new Error("Falha ao criar empresa");
@@ -39,7 +38,7 @@ export class EmpresaRepository {
     }
   }
 
-  async update(cnpj: string, data: Partial<NewEmpresa>): Promise<Empresa> {
+  async update(cnpj: string, data: Partial<EmpresaInsert>): Promise<Empresa> {
     try {
       const results = await db
         .update(empresa)
@@ -47,7 +46,7 @@ export class EmpresaRepository {
         .where(eq(empresa.cnpj, cnpj))
         .returning();
       if (!results[0])
-        throw new Error(`Empresa com CNPJ ${cnpj} não encontrada`);
+        throw new NotFoundError(`Empresa com CNPJ ${cnpj} não encontrada`);
       return results[0];
     } catch (error) {
       console.error(`Erro no update Empresa com CNPJ=${cnpj}:`, error);
@@ -62,7 +61,7 @@ export class EmpresaRepository {
         .where(eq(empresa.cnpj, cnpj))
         .returning();
       if (!results[0])
-        throw new Error(`Empresa com CNPJ ${cnpj} não encontrada`);
+        throw new NotFoundError(`Empresa com CNPJ ${cnpj} não encontrada`);
       return results[0];
     } catch (error) {
       console.error(`Erro no delete Empresa com CNPJ=${cnpj}:`, error);

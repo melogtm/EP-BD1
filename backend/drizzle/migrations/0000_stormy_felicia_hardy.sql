@@ -1,6 +1,6 @@
 CREATE TABLE "altera_produto" (
 	"cpf_funcionario" varchar(14) NOT NULL,
-	"prod_id" integer NOT NULL,
+	"prod_id" serial NOT NULL,
 	"datahoramodificacao" timestamp (3) NOT NULL,
 	CONSTRAINT "altera_produto_cpf_funcionario_prod_id_datahoramodificacao_pk" PRIMARY KEY("cpf_funcionario","prod_id","datahoramodificacao")
 );
@@ -46,7 +46,7 @@ CREATE TABLE "empresa" (
 );
 --> statement-breakpoint
 CREATE TABLE "exame" (
-	"exameid" integer PRIMARY KEY NOT NULL,
+	"exameid" serial PRIMARY KEY NOT NULL,
 	"tipoexame" varchar(100),
 	"datapedido" date,
 	"datahorarealiz" timestamp (3),
@@ -81,7 +81,7 @@ CREATE TABLE "funcionario_saude" (
 );
 --> statement-breakpoint
 CREATE TABLE "item_receita" (
-	"receitaid" integer NOT NULL,
+	"receitaid" serial NOT NULL,
 	"nomemedicamentogenerico" varchar(255) NOT NULL,
 	"posologia" varchar(255),
 	CONSTRAINT "item_receita_receitaid_nomemedicamentogenerico_pk" PRIMARY KEY("receitaid","nomemedicamentogenerico")
@@ -111,13 +111,13 @@ CREATE TABLE "paciente" (
 --> statement-breakpoint
 CREATE TABLE "paciente_possui_plano" (
 	"cpf_paciente" varchar(14) NOT NULL,
-	"planoid" integer NOT NULL,
+	"planoid" serial NOT NULL,
 	"numerocarteirinha" varchar(50),
 	CONSTRAINT "paciente_possui_plano_cpf_paciente_planoid_pk" PRIMARY KEY("cpf_paciente","planoid")
 );
 --> statement-breakpoint
 CREATE TABLE "pagamento" (
-	"pagamentoid" integer PRIMARY KEY NOT NULL,
+	"pagamentoid" serial PRIMARY KEY NOT NULL,
 	"valor" numeric(10, 2),
 	"datapag" date,
 	"coparticipacao" numeric(10, 2),
@@ -165,7 +165,7 @@ CREATE TABLE "pessoa" (
 );
 --> statement-breakpoint
 CREATE TABLE "plano_de_saude" (
-	"planoid" integer PRIMARY KEY NOT NULL,
+	"planoid" serial PRIMARY KEY NOT NULL,
 	"nomeplano" varchar(100),
 	"modalidade" varchar(50),
 	"cnpj_operadora" varchar(18)
@@ -184,7 +184,7 @@ CREATE TABLE "prest_terceirizado" (
 );
 --> statement-breakpoint
 CREATE TABLE "produto" (
-	"prod_id" integer PRIMARY KEY NOT NULL,
+	"prod_id" serial PRIMARY KEY NOT NULL,
 	"descricao" varchar(255),
 	"validade" date,
 	"fabricante" varchar(100),
@@ -202,12 +202,12 @@ CREATE TABLE "prontuario" (
 --> statement-breakpoint
 CREATE TABLE "realiza_plantao" (
 	"cpf_funcsaude" varchar(14) NOT NULL,
-	"plantaoid" integer NOT NULL,
+	"plantaoid" serial NOT NULL,
 	CONSTRAINT "realiza_plantao_cpf_funcsaude_plantaoid_pk" PRIMARY KEY("cpf_funcsaude","plantaoid")
 );
 --> statement-breakpoint
 CREATE TABLE "receita" (
-	"receitaid" integer PRIMARY KEY NOT NULL,
+	"receitaid" serial PRIMARY KEY NOT NULL,
 	"validade" date,
 	"dataemissao" date,
 	"observacoes" text,

@@ -1,0 +1,32 @@
+@apiUrl = http://localhost:3000
+
+### Criar Produto
+POST {{apiUrl}}/produtos
+Content-Type: application/json
+
+{
+  "descricao": "Produto Teste",
+  "validade": "2026-12-31",
+  "fabricante": "Fabricante Exemplo",
+  "cpfCadastrou": "12345678901",
+  "cnpjFornecedor": "12345678000199",
+  "sala": 1
+}
+
+### Listar Produtos
+GET {{apiUrl}}/produtos
+
+### Buscar Produto pelo ID
+GET {{apiUrl}}/produtos/1
+
+### Atualizar Produto
+PUT {{apiUrl}}/produtos/1
+Content-Type: application/json
+
+{
+  "descricao": "Produto Atualizado",
+  "sala": 2
+}
+
+### Deletar Produto
+DELETE {{apiUrl}}/produtos/1
