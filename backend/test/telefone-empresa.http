@@ -1,0 +1,32 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cnpjEmpresa = 12345678000199
+
+### PASSO 1: Criar empresa (dependência - usando a do Produto)
+POST {{baseUrl}}/empresas
+Content-Type: application/json
+
+{
+  "cnpj": "12345678000199",
+  "razaoSocial": "Empresa Teste"
+}
+
+### PASSO 2: Adicionar telefone
+POST {{baseUrl}}/telefones-empresa
+Content-Type: application/json
+
+{
+  "cnpj": "12345678000199",
+  "codPais": "55",
+  "ddd": "11",
+  "telefone": "2222-3333"
+}
+
+### PASSO 3: Listar todos
+GET {{baseUrl}}/telefones-empresa
+
+### PASSO 4: Buscar por empresa
+GET {{baseUrl}}/telefones-empresa/empresa/{{cnpjEmpresa}}
+
+### PASSO 5: Deletar telefone
+DELETE {{baseUrl}}/telefones-empresa/{{cnpjEmpresa}}/55/11/2222-3333

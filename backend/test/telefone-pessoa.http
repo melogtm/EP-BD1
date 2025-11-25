@@ -1,0 +1,44 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cpfPessoa = 12345678901
+
+### PASSO 1: Criar pessoa (dependência - usando a do Paciente)
+POST {{baseUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "cpf": "12345678901",
+  "nome": "João Silva",
+  "email": "joao@email.com"
+}
+
+### PASSO 2: Adicionar telefone
+POST {{baseUrl}}/telefones-pessoa
+Content-Type: application/json
+
+{
+  "cpf": "12345678901",
+  "codPais": "55",
+  "ddd": "11",
+  "telefone": "98765-4321"
+}
+
+### PASSO 3: Adicionar outro telefone
+POST {{baseUrl}}/telefones-pessoa
+Content-Type: application/json
+
+{
+  "cpf": "12345678901",
+  "codPais": "55",
+  "ddd": "11",
+  "telefone": "3333-4444"
+}
+
+### PASSO 4: Listar todos
+GET {{baseUrl}}/telefones-pessoa
+
+### PASSO 5: Buscar por pessoa
+GET {{baseUrl}}/telefones-pessoa/pessoa/{{cpfPessoa}}
+
+### PASSO 6: Deletar telefone
+DELETE {{baseUrl}}/telefones-pessoa/{{cpfPessoa}}/55/11/98765-4321

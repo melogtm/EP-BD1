@@ -1,0 +1,52 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cpfPrest = 44455566677
+
+### PASSO 1: Criar empresa (dependência)
+POST {{baseUrl}}/empresas
+Content-Type: application/json
+
+{
+  "cnpj": "55566677888888",
+  "razaoSocial": "Empresa de Terceirização Ltda",
+  "endRua": "Rua da Terceirização",
+  "endNum": "999",
+  "endBairro": "Vila Industrial",
+  "endCidade": "Campinas",
+  "endUf": "SP",
+  "endPais": "Brasil",
+  "endCep": "13000-000"
+}
+
+### PASSO 2: Criar pessoa (dependência)
+POST {{baseUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "cpf": "44455566677",
+  "nome": "Terceiro Silva",
+  "email": "terceiro@email.com",
+  "genero": "M",
+  "dataNascDia": 5,
+  "dataNascMes": 7,
+  "dataNascAno": 1992
+}
+
+### PASSO 3: Criar prestador terceirizado
+POST {{baseUrl}}/prestadores
+Content-Type: application/json
+
+{
+  "cpf": "44455566677",
+  "funcao": "Técnico de Limpeza",
+  "cnpjEmpresa": "55566677888888"
+}
+
+### PASSO 4: Listar todos
+GET {{baseUrl}}/prestadores
+
+### PASSO 5: Buscar por CPF
+GET {{baseUrl}}/prestadores/{{cpfPrest}}
+
+### PASSO 6: Deletar
+DELETE {{baseUrl}}/prestadores/{{cpfPrest}}
