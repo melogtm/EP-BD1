@@ -1,0 +1,99 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@planoId = 1
+
+### PASSO 1: Criar empresa (dependência)
+POST {{baseUrl}}/empresas
+Content-Type: application/json
+
+{
+  "cnpj": "11111111111111",
+  "razaoSocial": "Operadora Premium Saúde Ltda",
+  "endRua": "Av. Brasil",
+  "endNum": "2000",
+  "endBairro": "Liberdade",
+  "endCidade": "São Paulo",
+  "endUf": "SP",
+  "endPais": "Brasil",
+  "endCep": "01500-000",
+  "endComplem": "Sala 500"
+}
+
+### PASSO 2: Criar operadora de plano (dependência)
+POST {{baseUrl}}/operadoras
+Content-Type: application/json
+
+{
+  "cnpj": "11111111111111"
+}
+
+### PASSO 3: Criar plano de saúde
+POST {{baseUrl}}/planos
+Content-Type: application/json
+
+{
+  "nomePlano": "Plano Plus",
+  "modalidade": "Coparticipativo",
+  "cnpjOperadora": "11111111111111"
+}
+
+### PASSO 4: Criar outro plano
+POST {{baseUrl}}/planos
+Content-Type: application/json
+
+{
+  "nomePlano": "Plano Standard",
+  "modalidade": "Livre",
+  "cnpjOperadora": "11111111111111"
+}
+
+### PASSO 5: Criar terceiro plano
+POST {{baseUrl}}/planos
+Content-Type: application/json
+
+{
+  "nomePlano": "Plano Econômico",
+  "modalidade": "Rede",
+  "cnpjOperadora": "11111111111111"
+}
+
+### PASSO 6: Listar todos os planos
+GET {{baseUrl}}/planos
+
+### PASSO 7: Buscar um plano por ID
+GET {{baseUrl}}/planos/{{planoId}}
+
+### PASSO 8: Buscar plano que não existe (teste 404)
+GET {{baseUrl}}/planos/999
+
+### PASSO 9: Atualizar um plano
+PATCH {{baseUrl}}/planos/{{planoId}}
+Content-Type: application/json
+
+{
+  "nomePlano": "Plano Plus Premium"
+}
+
+### PASSO 10: Tentar atualizar plano que não existe
+PATCH {{baseUrl}}/planos/999
+Content-Type: application/json
+
+{
+  "nomePlano": "Novo nome"
+}
+
+### PASSO 11: Tentar criar plano com operadora que não existe (teste FK - deve dar erro 400)
+POST {{baseUrl}}/planos
+Content-Type: application/json
+
+{
+  "nomePlano": "Plano Fake",
+  "modalidade": "Coparticipativo",
+  "cnpjOperadora": "99999999999999"
+}
+
+### PASSO 12: Deletar um plano
+DELETE {{baseUrl}}/planos/3
+
+### PASSO 13: Tentar deletar plano que não existe
+DELETE {{baseUrl}}/planos/999
