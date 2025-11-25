@@ -1,0 +1,76 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cpfPaciente = 12345678901
+
+### PASSO 1: Usar paciente já criado (12345678901)
+
+### PASSO 2: Criar sala e pessoa de saúde para usar depois
+POST {{baseUrl}}/salas
+Content-Type: application/json
+
+{
+  "numeroSala": 401,
+  "tipoSala": "Prontuários"
+}
+
+### PASSO 3: Criar pessoa para médico
+POST {{baseUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "cpf": "55566677788",
+  "nome": "Dr. Lucas Médico",
+  "email": "lucas@email.com"
+}
+
+### PASSO 4: Criar funcionário
+POST {{baseUrl}}/funcionarios
+Content-Type: application/json
+
+{
+  "cpf": "55566677788",
+  "dataAdmissao": "2020-01-01",
+  "salarioBase": "7000.00",
+  "statusCargo": "Ativo",
+  "horarioTrab": "08:00-17:00",
+  "salaAlocacao": 401
+}
+
+### PASSO 5: Criar funcionário de saúde
+POST {{baseUrl}}/funcionarios-saude
+Content-Type: application/json
+
+{
+  "cpf": "55566677788",
+  "registroProfissional": "CRM999999",
+  "funcao": "Médico",
+  "especialidade": "Clínica Geral"
+}
+
+### PASSO 6: Criar prontuário
+POST {{baseUrl}}/prontuarios
+Content-Type: application/json
+
+{
+  "cpfPaciente": "12345678901",
+  "dataHoraCriacao": "2025-11-25T14:30:00Z",
+  "cpfAtualizou": "55566677788",
+  "dataHoraAtualizacao": "2025-11-25T14:30:00Z"
+}
+
+### PASSO 7: Listar todos
+GET {{baseUrl}}/prontuarios
+
+### PASSO 8: Buscar por CPF
+GET {{baseUrl}}/prontuarios/{{cpfPaciente}}
+
+### PASSO 9: Atualizar prontuário
+PATCH {{baseUrl}}/prontuarios/{{cpfPaciente}}
+Content-Type: application/json
+
+{
+  "dataHoraAtualizacao": "2025-11-25T15:00:00Z"
+}
+
+### PASSO 10: Deletar prontuário
+DELETE {{baseUrl}}/prontuarios/{{cpfPaciente}}
