@@ -1,5 +1,5 @@
 {
-  "id": "beb0b6bf-cb8d-4a45-a46f-3676c23469b4",
+  "id": "2b6a37fa-e2c7-4444-b04e-99466d8e96ef",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1250,7 +1250,7 @@
       "columns": {
         "plantaoid": {
           "name": "plantaoid",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },

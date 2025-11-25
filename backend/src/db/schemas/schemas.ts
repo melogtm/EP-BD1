@@ -53,7 +53,7 @@ export const localSala = pgTable("local_sala", {
 });
 
 export const plantao = pgTable("plantao", {
-  plantaoId: integer("plantaoid").primaryKey(),
+  plantaoId: serial("plantaoid").primaryKey(),
   dataHoraInicio: timestamp("datahorainicio", { precision: 3 }),
   dataHoraFim: timestamp("datahorafim", { precision: 3 }),
 });

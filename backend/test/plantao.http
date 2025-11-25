@@ -1,0 +1,62 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@dataHoraInicio = 2025-11-26T08:00:00Z
+@dataHoraFim = 2025-11-26T16:00:00Z
+
+### 1. Criar novo plantão
+POST {{baseUrl}}/plantoes
+Content-Type: application/json
+
+{
+  "dataHoraInicio": "2025-11-26T08:00:00Z",
+  "dataHoraFim": "2025-11-26T16:00:00Z"
+}
+
+### 2. Criar outro plantão
+POST {{baseUrl}}/plantoes
+Content-Type: application/json
+
+{
+  "dataHoraInicio": "2025-11-27T16:00:00Z",
+  "dataHoraFim": "2025-11-28T00:00:00Z"
+}
+
+### 3. Criar terceiro plantão
+POST {{baseUrl}}/plantoes
+Content-Type: application/json
+
+{
+  "dataHoraInicio": "2025-11-28T00:00:00Z",
+  "dataHoraFim": "2025-11-28T08:00:00Z"
+}
+
+### 4. Listar todos os plantões
+GET {{baseUrl}}/plantoes
+
+### 5. Buscar um plantão por ID
+GET {{baseUrl}}/plantoes/1
+
+### 6. Buscar plantão que não existe (teste 404)
+GET {{baseUrl}}/plantoes/999
+
+### 7. Atualizar um plantão
+PATCH {{baseUrl}}/plantoes/1
+Content-Type: application/json
+
+{
+  "dataHoraFim": "2025-11-26T18:00:00Z"
+}
+
+### 8. Tentar atualizar plantão que não existe
+PATCH {{baseUrl}}/plantoes/999
+Content-Type: application/json
+
+{
+  "dataHoraFim": "2025-12-01T00:00:00Z"
+}
+
+### 9. Deletar um plantão
+DELETE {{baseUrl}}/plantoes/3
+
+### 10. Tentar deletar plantão que não existe
+DELETE {{baseUrl}}/plantoes/999

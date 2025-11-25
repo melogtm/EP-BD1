@@ -172,7 +172,7 @@ CREATE TABLE "plano_de_saude" (
 );
 --> statement-breakpoint
 CREATE TABLE "plantao" (
-	"plantaoid" integer PRIMARY KEY NOT NULL,
+	"plantaoid" serial PRIMARY KEY NOT NULL,
 	"datahorainicio" timestamp (3),
 	"datahorafim" timestamp (3)
 );
