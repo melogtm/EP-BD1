@@ -1,0 +1,66 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@medicamentoNome = Dipirona
+
+### 1. Criar novo medicamento
+POST {{baseUrl}}/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Dipirona"
+}
+
+### 2. Criar outro medicamento
+POST {{baseUrl}}/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Amoxicilina"
+}
+
+### 3. Criar terceiro medicamento
+POST {{baseUrl}}/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Ibuprofeno"
+}
+
+### 4. Listar todos os medicamentos
+GET {{baseUrl}}/medicamentos
+
+### 5. Buscar um medicamento por nome
+GET {{baseUrl}}/medicamentos/{{medicamentoNome}}
+
+### 6. Buscar medicamento que não existe (teste 404)
+GET {{baseUrl}}/medicamentos/MedicamentoInexistente
+
+### 7. Atualizar um medicamento
+PATCH {{baseUrl}}/medicamentos/{{medicamentoNome}}
+Content-Type: application/json
+
+{
+  "nome": "Dipirona 500mg"
+}
+
+### 8. Tentar atualizar medicamento que não existe
+PATCH {{baseUrl}}/medicamentos/MedicamentoInexistente
+Content-Type: application/json
+
+{
+  "nome": "Novo nome"
+}
+
+### 9. Criar medicamento duplicado (teste de constraint - deve dar erro 409)
+POST {{baseUrl}}/medicamentos
+Content-Type: application/json
+
+{
+  "nome": "Amoxicilina"
+}
+
+### 10. Deletar um medicamento
+DELETE {{baseUrl}}/medicamentos/Ibuprofeno
+
+### 11. Tentar deletar medicamento que não existe
+DELETE {{baseUrl}}/medicamentos/MedicamentoInexistente
