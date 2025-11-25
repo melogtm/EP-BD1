@@ -1,0 +1,61 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@diagnosticoCid = A00
+
+### 1. Criar um novo diagnóstico
+POST {{baseUrl}}/diagnosticos
+Content-Type: application/json
+
+{
+  "cid": "A00",
+  "descricao": "Cólera"
+}
+
+### 2. Criar outro diagnóstico
+POST {{baseUrl}}/diagnosticos
+Content-Type: application/json
+
+{
+  "cid": "A01",
+  "descricao": "Febre tifoide"
+}
+
+### 3. Listar todos os diagnósticos
+GET {{baseUrl}}/diagnosticos
+
+### 4. Buscar um diagnóstico por CID
+GET {{baseUrl}}/diagnosticos/{{diagnosticoCid}}
+
+### 5. Buscar diagnóstico que não existe (teste 404)
+GET {{baseUrl}}/diagnosticos/Z99
+
+### 6. Atualizar um diagnóstico
+PATCH {{baseUrl}}/diagnosticos/{{diagnosticoCid}}
+Content-Type: application/json
+
+{
+  "descricao": "Cólera (Atualizado)"
+}
+
+### 7. Tentar atualizar diagnóstico que não existe
+PATCH {{baseUrl}}/diagnosticos/Z99
+Content-Type: application/json
+
+{
+  "descricao": "Descrição qualquer"
+}
+
+### 8. Criar diagnóstico duplicado (teste de constraint - deve dar erro 409)
+POST {{baseUrl}}/diagnosticos
+Content-Type: application/json
+
+{
+  "cid": "A00",
+  "descricao": "Teste duplicado"
+}
+
+### 9. Deletar um diagnóstico
+DELETE {{baseUrl}}/diagnosticos/{{diagnosticoCid}}
+
+### 10. Tentar deletar diagnóstico que não existe
+DELETE {{baseUrl}}/diagnosticos/Z99
