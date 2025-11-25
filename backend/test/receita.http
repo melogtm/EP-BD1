@@ -1,0 +1,54 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cpfPaciente = 12345678901
+@cpfMedico = 55566677788
+@dataHoraCons = 2025-11-26T10:00:00Z
+
+### PASSO 1: Usar consulta já criada
+### Consulta: 2025-11-26T10:00:00Z (médico: 55566677788, paciente: 12345678901)
+
+### PASSO 2: Criar primeira receita
+POST {{baseUrl}}/receitas
+Content-Type: application/json
+
+{
+  "validade": "2025-12-26",
+  "dataEmissao": "2025-11-26",
+  "observacoes": "Tomar 1 comprimido a cada 8 horas",
+  "dataHoraCons": "2025-11-26T10:00:00Z",
+  "cpfPaciente": "12345678901",
+  "cpfFuncSaude": "55566677788"
+}
+
+### PASSO 3: Criar segunda receita
+POST {{baseUrl}}/receitas
+Content-Type: application/json
+
+{
+  "validade": "2025-12-26",
+  "dataEmissao": "2025-11-26",
+  "observacoes": "Aplicar pomada 2x ao dia",
+  "dataHoraCons": "2025-11-26T10:00:00Z",
+  "cpfPaciente": "12345678901",
+  "cpfFuncSaude": "55566677788"
+}
+
+### PASSO 4: Listar todas as receitas
+GET {{baseUrl}}/receitas
+
+### PASSO 5: Buscar receita por ID
+GET {{baseUrl}}/receitas/1
+
+### PASSO 6: Buscar receitas por paciente
+GET {{baseUrl}}/receitas/paciente/{{cpfPaciente}}
+
+### PASSO 7: Atualizar receita
+PATCH {{baseUrl}}/receitas/1
+Content-Type: application/json
+
+{
+  "observacoes": "Tomar 1 comprimido a cada 12 horas (ALTERADO)"
+}
+
+### PASSO 8: Deletar receita
+DELETE {{baseUrl}}/receitas/2
