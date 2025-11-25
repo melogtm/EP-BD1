@@ -1,0 +1,49 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cpfPaciente = 12345678901
+@cpfMedico = 55566677788
+
+### PASSO 1: Criar primeiro pagamento (via Consulta)
+POST {{baseUrl}}/pagamentos
+Content-Type: application/json
+
+{
+  "valor": "150.00",
+  "dataPag": "2025-11-26",
+  "statusPagamento": "Pago",
+  "dataHoraCons": "2025-11-26T10:00:00Z",
+  "cpfPaciente": "12345678901",
+  "cpfFuncSaude": "55566677788"
+}
+
+### PASSO 2: Criar segundo pagamento (via Exame)
+POST {{baseUrl}}/pagamentos
+Content-Type: application/json
+
+{
+  "valor": "200.00",
+  "dataPag": "2025-11-27",
+  "statusPagamento": "Pendente",
+  "exameId": 3
+}
+
+### PASSO 3: Listar todos
+GET {{baseUrl}}/pagamentos
+
+### PASSO 4: Buscar por ID
+GET {{baseUrl}}/pagamentos/1
+
+### PASSO 5: Buscar por paciente
+GET {{baseUrl}}/pagamentos/paciente/{{cpfPaciente}}
+
+### PASSO 6: Atualizar pagamento
+PATCH {{baseUrl}}/pagamentos/1
+Content-Type: application/json
+
+{
+  "statusPagamento": "Pago",
+  "desconto": "10.00"
+}
+
+### PASSO 7: Deletar pagamento
+DELETE {{baseUrl}}/pagamentos/1
