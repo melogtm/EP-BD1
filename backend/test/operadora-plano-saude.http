@@ -1,0 +1,84 @@
+### Variáveis
+@baseUrl = http://localhost:3000
+@cnpjOperadora = 12345678000199
+
+### 1. Criar empresa primeiro (para usar como operadora)
+POST {{baseUrl}}/empresas
+Content-Type: application/json
+
+{
+  "cnpj": "12345678000199",
+  "razaoSocial": "Operadora de Saúde XYZ Ltda",
+  "endRua": "Av. Paulista",
+  "endNum": "1000",
+  "endBairro": "Bela Vista",
+  "endCidade": "São Paulo",
+  "endUf": "SP",
+  "endPais": "Brasil",
+  "endCep": "01311-100",
+  "endComplem": "Sala 1500"
+}
+
+### 2. Criar outra empresa
+POST {{baseUrl}}/empresas
+Content-Type: application/json
+
+{
+  "cnpj": "98765432000111",
+  "razaoSocial": "Operadora de Saúde ABC Ltda",
+  "endRua": "Rua das Flores",
+  "endNum": "500",
+  "endBairro": "Centro",
+  "endCidade": "Rio de Janeiro",
+  "endUf": "RJ",
+  "endPais": "Brasil",
+  "endCep": "20040-020",
+  "endComplem": "Apto 200"
+}
+
+### 3. Criar operadora de plano de saúde (referenciando empresa existente)
+POST {{baseUrl}}/operadoras
+Content-Type: application/json
+
+{
+  "cnpj": "12345678000199"
+}
+
+### 4. Criar outra operadora
+POST {{baseUrl}}/operadoras
+Content-Type: application/json
+
+{
+  "cnpj": "98765432000111"
+}
+
+### 5. Listar todas as operadoras
+GET {{baseUrl}}/operadoras
+
+### 6. Buscar uma operadora por CNPJ
+GET {{baseUrl}}/operadoras/{{cnpjOperadora}}
+
+### 7. Buscar operadora que não existe (teste 404)
+GET {{baseUrl}}/operadoras/11111111111111
+
+### 8. Tentar criar operadora com CNPJ que não existe em empresa (teste FK - deve dar erro 400)
+POST {{baseUrl}}/operadoras
+Content-Type: application/json
+
+{
+  "cnpj": "99999999999999"
+}
+
+### 9. Tentar criar operadora duplicada (teste constraint - deve dar erro 409)
+POST {{baseUrl}}/operadoras
+Content-Type: application/json
+
+{
+  "cnpj": "12345678000199"
+}
+
+### 10. Deletar uma operadora
+DELETE {{baseUrl}}/operadoras/98765432000111
+
+### 11. Tentar deletar operadora que não existe
+DELETE {{baseUrl}}/operadoras/11111111111111
