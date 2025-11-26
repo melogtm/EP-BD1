@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { diagnosticoRoutes } from "./routes/diagnostico.routes";
 import { medicamentoRoutes } from "./routes/medicamento.routes";
 import { localSalaRoutes } from "./routes/local-sala.routes";
@@ -30,6 +31,18 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:8080",
+      "https://caiobritodev-hospita-58ko.bolt.host",
+    ],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+    allowedHeaders: "Content-Type, Accept, Authorization",
+  })
+);
 
 // Rotas
 app.use("/diagnosticos", diagnosticoRoutes);
