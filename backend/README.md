@@ -1,118 +1,24 @@
-# Configurando o Ambiente Local
+# Instruções para rodar o backend
 
-Siga os passos abaixo para clonar e configurar o projeto em sua máquina.
+Pré-requisitos
+- Ter o Node.js instalado
+- Ter o Docker instalado
 
----
+Passos para rodar o backend
 
-## 1. Clonar o Repositório
+1) Rodar o banco de dados PostgreSQL:
+docker run --name meu_postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=epbd1 -e POSTGRES_USER=postgres -p 5432:5432 -d postgres:16-alpine
 
-```bash
-git clone <URL_DO_SEU_REPOSITORIO_GIT>
-cd <NOME_DA_PASTA_DO_PROJETO>
-```
+Aguarde até que o container esteja completamente iniciado.
 
----
+2) Instalar as dependências do projeto:
+npm i
 
-## 2. Instalar as Dependências
-
-Este comando irá instalar todos os pacotes listados no package.json:
-
-```bash
-npm install
-```
-
----
-
-## 3. Configurar as Variáveis de Ambiente
-
-As variáveis de ambiente são usadas para armazenar informações sensíveis, como as credenciais do banco de dados.
-
-Copie o arquivo de exemplo `.env.example` para um novo arquivo chamado `.env`:
-
-```bash
-cp .env.example .env
-```
-
----
-
-## 4. Subir o Banco de Dados (Docker)
-
-Certifique-se de que o Docker está instalado e rodando.
-
-Para subir os serviços:
-
-```bash
-doc
-```
-
-Para derrubar:
-
-```bash
-docker compose down
-```
-
----
-
-## 5. Executar as Migrations do Banco de Dados (Drizzle)
-
-Com o banco rodando, execute:
-
-```bash
-npm run db:migrate
-```
-
-Comandos úteis:
-
-Gerar migrations automaticamente:
-```bash
-npm run db:generate
-```
-
-Aplicar alterações no banco sem gerar migration:
-```bash
-npm run db:push
-```
-
-Abrir o Drizzle Studio:
-```bash
-npm run db:studio
-```
-
----
-
-## 6. Rodando a Aplicação
-
-Com tudo configurado, você pode iniciar o servidor de desenvolvimento:
-
-```bash
+3) Rodar o backend em modo desenvolvimento:
 npm run dev
-```
 
-O servidor estará rodando na porta **3000**:  
-http://localhost:3000
+4) npm run db:generate
 
-O servidor reiniciará automaticamente sempre que você salvar uma alteração nos arquivos.
+5) npm run db:migrate
 
----
-
-## 7. Trabalhando com Migrations
-
-O Drizzle gerencia a evolução do banco através de migrations.
-
-Aplicar migrations existentes (ex: depois de um git pull que alterou o schema):
-
-```bash
-npm run db:migrate
-```
-
-Criar uma nova migration após editar o schema:
-
-```bash
-npm run db:generate
-```
-
-Depois aplicar:
-
-```bash
-npm run db:migrate
-```
+Após esses passos, o backend estará rodando e conectado ao banco de dados PostgreSQL no container Docker.
