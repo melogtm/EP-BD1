@@ -1,12 +1,15 @@
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { funcionarioService, funcionarioSaudeService } from '@/services/funcionarioService';
-import { pessoaService } from '@/services/pacienteService';
-import { Funcionario, FuncionarioSaude, Pessoa } from '@/types';
-import { DataTable } from '@/components/DataTable';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useEffect, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  funcionarioService,
+  funcionarioSaudeService,
+} from "@/services/funcionarioService";
+import { pessoaService } from "@/services/pacienteService";
+import { Funcionario, FuncionarioSaude, Pessoa } from "@/types";
+import { DataTable } from "@/components/DataTable";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +17,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,10 +27,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Users } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+} from "@/components/ui/alert-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus, Users } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function FuncionarioPage() {
   const { toast } = useToast();
@@ -36,44 +39,68 @@ export default function FuncionarioPage() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Funcionario | null>(null);
   const [isSaude, setIsSaude] = useState(false);
-  
+
   const [pessoaData, setPessoaData] = useState<Pessoa>({
-    cpf: '',
-    nome: '',
-    email: '',
-    genero: '',
+    cpf: "",
+    nome: "",
+    email: "",
+    genero: "",
     dataNascDia: 1,
     dataNascMes: 1,
     dataNascAno: 2000,
-    endRua: '',
-    endNum: '',
-    endBairro: '',
-    endCidade: '',
-    endUf: '',
-    endPais: 'Brasil',
-    endCep: '',
+    endRua: "",
+    endNum: "",
+    endBairro: "",
+    endCidade: "",
+    endUf: "",
+    endPais: "Brasil",
+    endCep: "",
   });
 
   const [funcionarioData, setFuncionarioData] = useState<Funcionario>({
-    cpf: '',
-    dataAdmissao: '',
+    cpf: "",
+    dataAdmissao: "",
     salarioBase: 0,
-    statusCargo: 'Ativo',
-    horarioTrab: '',
+    statusCargo: "Ativo",
+    horarioTrab: "",
     salaAlocacao: 0,
   });
 
-  const [funcionarioSaudeData, setFuncionarioSaudeData] = useState<FuncionarioSaude>({
-    cpf: '',
-    registroProfissional: '',
-    funcao: '',
-    especialidade: '',
-  });
+  const [funcionarioSaudeData, setFuncionarioSaudeData] =
+    useState<FuncionarioSaude>({
+      cpf: "",
+      registroProfissional: "",
+      funcao: "",
+      especialidade: "",
+    });
 
   const { data: funcionarios = [], isLoading } = useQuery({
-    queryKey: ['funcionarios'],
+    queryKey: ["funcionarios"],
     queryFn: funcionarioService.getAll,
   });
+
+  useEffect(() => {
+    console.log("Funcionários recebidos:", funcionarios);
+    console.log("IsLoading:", isLoading);
+    console.log("Type:", typeof funcionarios);
+    console.log("IsArray:", Array.isArray(funcionarios));
+  }, [funcionarios, isLoading]);
+
+  // Adicione isto temporariamente no FuncionarioPage.tsx:
+  useEffect(() => {
+    const test = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/funcionarios");
+        const json = await res.json();
+        console.log("RAW Response:", json);
+        console.log("Is Array?", Array.isArray(json));
+        console.log("Keys:", Object.keys(json));
+      } catch (e) {
+        console.error("Fetch error:", e);
+      }
+    };
+    test();
+  }, []);
 
   const createPessoaMutation = useMutation({
     mutationFn: pessoaService.create,
@@ -86,19 +113,19 @@ export default function FuncionarioPage() {
   const createFuncionarioSaudeMutation = useMutation({
     mutationFn: funcionarioSaudeService.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['funcionarios'] });
+      queryClient.invalidateQueries({ queryKey: ["funcionarios"] });
       setIsFormOpen(false);
       resetForm();
       toast({
-        title: 'Sucesso',
-        description: 'Funcionário criado com sucesso',
+        title: "Sucesso",
+        description: "Funcionário criado com sucesso",
       });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Erro',
+        title: "Erro",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
@@ -109,52 +136,52 @@ export default function FuncionarioPage() {
       await pessoaService.delete(cpf);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['funcionarios'] });
+      queryClient.invalidateQueries({ queryKey: ["funcionarios"] });
       setIsDeleteOpen(false);
       toast({
-        title: 'Sucesso',
-        description: 'Funcionário excluído com sucesso',
+        title: "Sucesso",
+        description: "Funcionário excluído com sucesso",
       });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Erro',
+        title: "Erro",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
 
   const resetForm = () => {
     setPessoaData({
-      cpf: '',
-      nome: '',
-      email: '',
-      genero: '',
+      cpf: "",
+      nome: "",
+      email: "",
+      genero: "",
       dataNascDia: 1,
       dataNascMes: 1,
       dataNascAno: 2000,
-      endRua: '',
-      endNum: '',
-      endBairro: '',
-      endCidade: '',
-      endUf: '',
-      endPais: 'Brasil',
-      endCep: '',
+      endRua: "",
+      endNum: "",
+      endBairro: "",
+      endCidade: "",
+      endUf: "",
+      endPais: "Brasil",
+      endCep: "",
     });
     setFuncionarioData({
-      cpf: '',
-      dataAdmissao: '',
+      cpf: "",
+      dataAdmissao: "",
       salarioBase: 0,
-      statusCargo: 'Ativo',
-      horarioTrab: '',
+      statusCargo: "Ativo",
+      horarioTrab: "",
       salaAlocacao: 0,
     });
     setFuncionarioSaudeData({
-      cpf: '',
-      registroProfissional: '',
-      funcao: '',
-      especialidade: '',
+      cpf: "",
+      registroProfissional: "",
+      funcao: "",
+      especialidade: "",
     });
     setIsSaude(false);
     setSelectedItem(null);
@@ -179,33 +206,33 @@ export default function FuncionarioPage() {
           cpf: pessoaData.cpf,
         });
       } else {
-        queryClient.invalidateQueries({ queryKey: ['funcionarios'] });
+        queryClient.invalidateQueries({ queryKey: ["funcionarios"] });
         setIsFormOpen(false);
         resetForm();
         toast({
-          title: 'Sucesso',
-          description: 'Funcionário criado com sucesso',
+          title: "Sucesso",
+          description: "Funcionário criado com sucesso",
         });
       }
     } catch (error) {
-      console.error('Error creating employee:', error);
+      console.error("Error creating employee:", error);
     }
   };
 
   const columns = [
-    { header: 'CPF', accessor: 'cpf' as keyof Funcionario },
+    { header: "CPF", accessor: "cpf" as keyof Funcionario },
     {
-      header: 'Admissão',
+      header: "Admissão",
       accessor: ((row: Funcionario) =>
-        new Date(row.dataAdmissao).toLocaleDateString('pt-BR')) as any,
+        new Date(row.dataAdmissao).toLocaleDateString("pt-BR")) as any,
     },
     {
-      header: 'Salário',
+      header: "Salário",
       accessor: ((row: Funcionario) =>
         `R$ ${row.salarioBase.toFixed(2)}`) as any,
     },
-    { header: 'Status', accessor: 'statusCargo' as keyof Funcionario },
-    { header: 'Sala', accessor: 'salaAlocacao' as keyof Funcionario },
+    { header: "Status", accessor: "statusCargo" as keyof Funcionario },
+    { header: "Sala", accessor: "salaAlocacao" as keyof Funcionario },
   ];
 
   return (
@@ -254,7 +281,7 @@ export default function FuncionarioPage() {
                 <TabsTrigger value="funcionario">Dados do Cargo</TabsTrigger>
                 <TabsTrigger value="saude">Saúde (Opcional)</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="pessoa" className="space-y-4 mt-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -262,7 +289,9 @@ export default function FuncionarioPage() {
                     <Input
                       id="cpf"
                       value={pessoaData.cpf}
-                      onChange={(e) => setPessoaData({ ...pessoaData, cpf: e.target.value })}
+                      onChange={(e) =>
+                        setPessoaData({ ...pessoaData, cpf: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -271,7 +300,9 @@ export default function FuncionarioPage() {
                     <Input
                       id="nome"
                       value={pessoaData.nome}
-                      onChange={(e) => setPessoaData({ ...pessoaData, nome: e.target.value })}
+                      onChange={(e) =>
+                        setPessoaData({ ...pessoaData, nome: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -281,7 +312,9 @@ export default function FuncionarioPage() {
                       id="email"
                       type="email"
                       value={pessoaData.email}
-                      onChange={(e) => setPessoaData({ ...pessoaData, email: e.target.value })}
+                      onChange={(e) =>
+                        setPessoaData({ ...pessoaData, email: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -290,7 +323,9 @@ export default function FuncionarioPage() {
                     <Input
                       id="genero"
                       value={pessoaData.genero}
-                      onChange={(e) => setPessoaData({ ...pessoaData, genero: e.target.value })}
+                      onChange={(e) =>
+                        setPessoaData({ ...pessoaData, genero: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -306,7 +341,10 @@ export default function FuncionarioPage() {
                       type="date"
                       value={funcionarioData.dataAdmissao}
                       onChange={(e) =>
-                        setFuncionarioData({ ...funcionarioData, dataAdmissao: e.target.value })
+                        setFuncionarioData({
+                          ...funcionarioData,
+                          dataAdmissao: e.target.value,
+                        })
                       }
                       required
                     />
@@ -333,7 +371,10 @@ export default function FuncionarioPage() {
                       id="horarioTrab"
                       value={funcionarioData.horarioTrab}
                       onChange={(e) =>
-                        setFuncionarioData({ ...funcionarioData, horarioTrab: e.target.value })
+                        setFuncionarioData({
+                          ...funcionarioData,
+                          horarioTrab: e.target.value,
+                        })
                       }
                       placeholder="Ex: 08:00-17:00"
                       required
@@ -366,12 +407,16 @@ export default function FuncionarioPage() {
                     onChange={(e) => setIsSaude(e.target.checked)}
                     className="h-4 w-4"
                   />
-                  <Label htmlFor="isSaude">Este é um funcionário da área de saúde</Label>
+                  <Label htmlFor="isSaude">
+                    Este é um funcionário da área de saúde
+                  </Label>
                 </div>
                 {isSaude && (
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="registroProfissional">Registro Profissional *</Label>
+                      <Label htmlFor="registroProfissional">
+                        Registro Profissional *
+                      </Label>
                       <Input
                         id="registroProfissional"
                         value={funcionarioSaudeData.registroProfissional}
@@ -420,7 +465,11 @@ export default function FuncionarioPage() {
             </Tabs>
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setIsFormOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsFormOpen(false)}
+              >
                 Cancelar
               </Button>
               <Button type="submit">Criar Funcionário</Button>
@@ -434,14 +483,16 @@ export default function FuncionarioPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir o funcionário com CPF "{selectedItem?.cpf}"? Esta
-              ação não pode ser desfeita.
+              Tem certeza que deseja excluir o funcionário com CPF "
+              {selectedItem?.cpf}"? Esta ação não pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => selectedItem && deleteMutation.mutate(selectedItem.cpf)}
+              onClick={() =>
+                selectedItem && deleteMutation.mutate(selectedItem.cpf)
+              }
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Excluir

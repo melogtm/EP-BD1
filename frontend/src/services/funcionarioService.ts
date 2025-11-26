@@ -11,7 +11,12 @@ export const funcionarioService = {
     const response = await api.get<ApiListResponse<Funcionario>>(
       "/funcionarios"
     );
-    return response.data.data.map((f) => ({
+
+    const data = Array.isArray(response.data)
+      ? response.data
+      : response.data?.data || [];
+
+    return data.map((f) => ({
       ...f,
       salarioBase:
         typeof f.salarioBase === "string"
