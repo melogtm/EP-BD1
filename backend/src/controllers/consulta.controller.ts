@@ -138,6 +138,25 @@ export class ConsultaController {
     }
   }
 
+  async getMedicoDisponivel(req: Request, res: Response): Promise<Response> {
+    try {
+      const { cpfPaciente, especialidade, data, horario } = req.params;
+      if (!cpfPaciente || !especialidade || !data || !horario) {
+        return res.status(400).json({ message: "Todos os parâmetros são obrigatórios" });
+      }
+      const result = await this.consultaService.getMedicoDisponivel(
+        cpfPaciente,
+        especialidade,
+        data,
+        horario
+      );
+      return res.status(200).json(result);
+    } catch (error: unknown) {
+      const { statusCode, message, detail } = mapPostgresErrorToHttp(error);
+      return res.status(statusCode).json({ message, detail });
+    }
+  }
+
   async update(req: Request, res: Response): Promise<Response> {
     try {
       const { dataHoraAgendada, cpfFuncSaude, cpfPaciente } = req.params;

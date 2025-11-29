@@ -4,7 +4,7 @@ import { PacienteRepository } from "../repositories/paciente.repository";
 import type { Consulta, ConsultaInsert } from "../db/schemas/schemas.types";
 import { NotFoundError } from "../errors/NotFoundError";
 import { db } from "../db/index";
-import { consulta, funcionarioSaude } from "../db/schemas/schemas";
+import { consulta, funcionarioSaude, funcionario } from "../db/schemas/schemas";
 import { and, eq, gte, lt, or } from "drizzle-orm";
 
 export class ConsultaService {
@@ -205,5 +205,71 @@ export class ConsultaService {
         ? String(r.statusAtendimento).toLowerCase()
         : null,
     }));
+  }
+
+  async getMedicoDisponivel(
+    cpfPaciente: string,
+    especialidade: string,
+    data: string,
+    horario: string
+  ): Promise<any> {
+    // validate patient
+    const paciente = await this.pacienteRepo.findById(cpfPaciente);
+    if (!paciente) throw new NotFoundError("Paciente não encontrado");
+
+    // find medics by specialty
+    const medicos = await this.funcionarioRepo.findByEspecialidade(especialidade);
+    if (!medicos || medicos.length === 0) {
+      return { disponivel: false };
+    }
+
+    const dateTime = new Date(`${data}T${horario}`);
+
+    // check patient double-booking
+    const patientBusy = await db
+      .select()
+      .from(consulta)
+      .where(
+        and(
+          eq(consulta.cpfPaciente, cpfPaciente),
+          eq(consulta.dataHoraAgendada, dateTime),
+          eq(consulta.statusAtendimento, "Agendado")
+        )
+      );
+    if (patientBusy.length > 0) {
+      return { disponivel: false, reason: "Paciente já possui consulta neste horário" };
+    }
+
+    // find first medic without an Agendado consulta at this datetime
+    for (const m of medicos) {
+      const busy = await db
+        .select()
+        .from(consulta)
+        .where(
+          and(
+            eq(consulta.cpfFuncSaude, m.cpf),
+            eq(consulta.dataHoraAgendada, dateTime),
+            eq(consulta.statusAtendimento, "Agendado")
+          )
+        );
+      if (busy.length === 0) {
+        // fetch funcionario to get name and sala
+        const func = await db.query.funcionario
+          .findFirst({ where: eq(funcionario.cpf, m.cpf), with: { pessoa: true } })
+          .catch(() => null as any);
+
+        const nome = func?.pessoa?.nome ?? null;
+        const salaDisponivel = func?.salaAlocacao ?? null;
+
+        return {
+          cpfFuncSaude: m.cpf,
+          nomeMedico: nome,
+          salaDisponivel,
+          disponivel: true,
+        };
+      }
+    }
+
+    return { disponivel: false };
   }
 }

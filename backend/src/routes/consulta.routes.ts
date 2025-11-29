@@ -24,6 +24,11 @@ consultaRoutes.get(
 );
 
 consultaRoutes.get(
+  "/disponiveis/:cpfPaciente/:especialidade/:data/:horario",
+  consultaController.getMedicoDisponivel.bind(consultaController)
+);
+
+consultaRoutes.get(
   "/medico/:cpfFuncSaude",
   consultaController.getByMedico.bind(consultaController)
 );
