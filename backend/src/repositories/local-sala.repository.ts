@@ -1,6 +1,7 @@
-import { eq } from "drizzle-orm";
+import { and, eq, gte, lt } from "drizzle-orm";
 import { db } from "../db/index";
 import { localSala } from "../db/schemas/schemas";
+import { consulta } from "../db/schemas/schemas";
 import type { LocalSala, LocalSalaInsert } from "../db/schemas/schemas.types";
 import { NotFoundError } from "../errors/NotFoundError";
 
@@ -45,5 +46,28 @@ export class LocalSalaRepository {
     if (!results[0])
       throw new NotFoundError(`Sala ${numeroSala} não encontrada`);
     return results[0];
+  }
+
+  async countConsultasBySala(
+    numeroSala: number,
+    dateIso?: string
+  ): Promise<number> {
+    // count consultas with status "Agendado" for the given sala
+    let whereCondition: any = eq(consulta.sala, numeroSala);
+    whereCondition = and(whereCondition, eq(consulta.statusAtendimento, "Agendado"));
+
+    if (dateIso) {
+      const start = new Date(dateIso + "T00:00:00");
+      const end = new Date(start);
+      end.setDate(end.getDate() + 1);
+      whereCondition = and(
+        whereCondition,
+        gte(consulta.dataHoraAgendada, start),
+        lt(consulta.dataHoraAgendada, end)
+      );
+    }
+
+    const rows = await db.select().from(consulta).where(whereCondition);
+    return rows.length;
   }
 }

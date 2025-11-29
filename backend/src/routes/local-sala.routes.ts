@@ -3,8 +3,15 @@ import { LocalSalaController } from "../controllers/local-sala.controller";
 
 const localSalaRoutes = Router();
 const localSalaController = new LocalSalaController();
-
 localSalaRoutes.post("/", localSalaController.create.bind(localSalaController));
+localSalaRoutes.get(
+  "/ocupacao",
+  localSalaController.getOcupacaoTodas.bind(localSalaController)
+);
+localSalaRoutes.get(
+  "/:numeroSala/ocupacao",
+  localSalaController.getOcupacaoSala.bind(localSalaController)
+);
 localSalaRoutes.get("/", localSalaController.getAll.bind(localSalaController));
 localSalaRoutes.get(
   "/:numeroSala",

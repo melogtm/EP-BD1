@@ -50,6 +50,7 @@ export const empresa = pgTable("empresa", {
 export const localSala = pgTable("local_sala", {
   numeroSala: integer("numerosala").primaryKey(),
   tipoSala: varchar("tiposala", { length: 50 }),
+  capacidade: integer("capacidade"),
 });
 
 export const plantao = pgTable("plantao", {
