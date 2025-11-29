@@ -26,6 +26,7 @@ import { consultaDiagnosticoRoutes } from "./routes/consulta-diagnostico.routes"
 import { pessoaRoutes } from "./routes/pessoa.routes";
 import { empresaRoutes } from "./routes/empresa.routes";
 import { produtoRoutes } from "./routes/produto.routes";
+import { adminRoutes } from "./routes/admin.routes";
 
 const app = express();
 const PORT = 3000;
@@ -71,6 +72,7 @@ app.use("/consulta-diagnosticos", consultaDiagnosticoRoutes);
 app.use("/pessoas", pessoaRoutes);
 app.use("/empresas", empresaRoutes);
 app.use("/produtos", produtoRoutes);
+app.use("/admin", adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);

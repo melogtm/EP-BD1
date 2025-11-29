@@ -57,6 +57,26 @@ export class ConsultaController {
     }
   }
 
+  async getAgendaMedicoDia(req: Request, res: Response): Promise<Response> {
+    try {
+      const cpfMedico = req.params.cpfFuncSaude;
+      const data = req.params.data;
+      if (!cpfMedico || !data) {
+        return res
+          .status(400)
+          .json({ message: "CPF do médico e data são obrigatórios" });
+      }
+      const agenda = await this.consultaService.getAgendaMedicoDia(
+        cpfMedico,
+        data
+      );
+      return res.status(200).json(agenda);
+    } catch (error: unknown) {
+      const { statusCode, message, detail } = mapPostgresErrorToHttp(error);
+      return res.status(statusCode).json({ message, detail });
+    }
+  }
+
   async getConsultasPassadas(req: Request, res: Response): Promise<Response> {
     try {
       const cpfPaciente = req.params.cpfPaciente;

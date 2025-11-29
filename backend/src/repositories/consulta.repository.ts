@@ -116,6 +116,28 @@ export class ConsultaRepository {
     });
   }
 
+  async findByMedicoDia(cpfFuncSaude: string, dateIso: string): Promise<any[]> {
+    // Build day range
+    const start = new Date(dateIso + "T00:00:00");
+    const end = new Date(start);
+    end.setDate(end.getDate() + 1);
+
+    return await db.query.consulta.findMany({
+      where: and(
+        eq(consulta.cpfFuncSaude, cpfFuncSaude),
+        gte(consulta.dataHoraAgendada, start),
+        lt(consulta.dataHoraAgendada, end)
+      ),
+      with: {
+        paciente: {
+          with: {
+            pessoa: true,
+          },
+        },
+      },
+    });
+  }
+
 
   async update(
     dataHoraAgendada: Date,

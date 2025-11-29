@@ -170,4 +170,40 @@ export class ConsultaService {
 
     return slots;
   }
+
+  async getAgendaMedicoDia(
+    cpfMedico: string,
+    data: string
+  ): Promise<any[]> {
+    // validate medico
+    const medico = await this.funcionarioRepo.findById(cpfMedico);
+    if (!medico) throw new NotFoundError("Médico não encontrado");
+
+    const rows = (await this.repository.findByMedicoDia(
+      cpfMedico,
+      data
+    )) as any[];
+
+    // sort by scheduled time ascending
+    rows.sort((a: any, b: any) => {
+      const da = a.dataHoraAgendada ? new Date(a.dataHoraAgendada).getTime() : 0;
+      const db = b.dataHoraAgendada ? new Date(b.dataHoraAgendada).getTime() : 0;
+      return da - db;
+    });
+
+    return rows.map((r: any, idx: number) => ({
+      id: idx + 1,
+      dataHoraAgendada: r.dataHoraAgendada
+        ? new Date(r.dataHoraAgendada).toISOString().split(".")[0]
+        : null,
+      cpfFuncSaude: r.cpfFuncSaude,
+      paciente: {
+        cpf: r.paciente?.cpf ?? null,
+        nome: r.paciente?.pessoa?.nome ?? null,
+      },
+      status: r.statusAtendimento
+        ? String(r.statusAtendimento).toLowerCase()
+        : null,
+    }));
+  }
 }

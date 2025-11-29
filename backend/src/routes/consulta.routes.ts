@@ -19,6 +19,11 @@ consultaRoutes.get(
   consultaController.getConsultasFuturas.bind(consultaController)
 );
 consultaRoutes.get(
+  "/medico/:cpfFuncSaude/dia/:data",
+  consultaController.getAgendaMedicoDia.bind(consultaController)
+);
+
+consultaRoutes.get(
   "/medico/:cpfFuncSaude",
   consultaController.getByMedico.bind(consultaController)
 );
