@@ -31,7 +31,9 @@ export class ConsultaController {
     try {
       const cpfPaciente = req.params.cpfPaciente;
       if (!cpfPaciente) {
-        return res.status(400).json({ message: "CPF do paciente é obrigatório" });
+        return res
+          .status(400)
+          .json({ message: "CPF do paciente é obrigatório" });
       }
       const consultas = await this.consultaService.getByPaciente(cpfPaciente);
       return res.status(200).json(consultas);
@@ -55,11 +57,74 @@ export class ConsultaController {
     }
   }
 
+  async getConsultasPassadas(req: Request, res: Response): Promise<Response> {
+    try {
+      const cpfPaciente = req.params.cpfPaciente;
+      if (!cpfPaciente) {
+        return res
+          .status(400)
+          .json({ message: "CPF do paciente é obrigatório" });
+      }
+      const consultas = await this.consultaService.getConsultasPassadas(
+        cpfPaciente
+      );
+      return res.status(200).json(consultas);
+    } catch (error: unknown) {
+      const { statusCode, message, detail } = mapPostgresErrorToHttp(error);
+      return res.status(statusCode).json({ message, detail });
+    }
+  }
+
+  async getConsultasFuturas(req: Request, res: Response): Promise<Response> {
+    try {
+      const cpfPaciente = req.params.cpfPaciente;
+      if (!cpfPaciente) {
+        return res
+          .status(400)
+          .json({ message: "CPF do paciente é obrigatório" });
+      }
+      const consultas = await this.consultaService.getConsultasFuturas(
+        cpfPaciente
+      );
+      return res.status(200).json(consultas);
+    } catch (error: unknown) {
+      const { statusCode, message, detail } = mapPostgresErrorToHttp(error);
+      return res.status(statusCode).json({ message, detail });
+    }
+  }
+
+  async getHorariosDisponiveis(req: Request, res: Response) : Promise<Response> {
+    try {
+      const { cpfPaciente, especialidade, data } = req.query;
+      if (
+        typeof cpfPaciente !== "string" ||
+        typeof especialidade !== "string" ||
+        typeof data !== "string"
+      ) {
+        return res.status(400).json({
+          message:
+            "Parâmetros 'cpfPaciente', 'especialidade' e 'data' são obrigatórios",
+        });
+      }
+      const horarios = await this.consultaService.getHorariosDisponiveis(
+        cpfPaciente,
+        especialidade,
+        data
+      );
+      return res.status(200).json(horarios);
+    } catch (error: unknown) {
+      const { statusCode, message, detail } = mapPostgresErrorToHttp(error);
+      return res.status(statusCode).json({ message, detail });
+    }
+  }
+
   async update(req: Request, res: Response): Promise<Response> {
     try {
       const { dataHoraAgendada, cpfFuncSaude, cpfPaciente } = req.params;
       if (!dataHoraAgendada || !cpfFuncSaude || !cpfPaciente) {
-        return res.status(400).json({ message: "Todos os parâmetros são obrigatórios" });
+        return res
+          .status(400)
+          .json({ message: "Todos os parâmetros são obrigatórios" });
       }
       const data = req.body;
       const updatedConsulta = await this.consultaService.update(
@@ -82,7 +147,9 @@ export class ConsultaController {
     try {
       const { dataHoraAgendada, cpfFuncSaude, cpfPaciente } = req.params;
       if (!dataHoraAgendada || !cpfFuncSaude || !cpfPaciente) {
-        return res.status(400).json({ message: "Todos os parâmetros são obrigatórios" });
+        return res
+          .status(400)
+          .json({ message: "Todos os parâmetros são obrigatórios" });
       }
       await this.consultaService.delete(
         new Date(dataHoraAgendada),

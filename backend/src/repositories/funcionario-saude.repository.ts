@@ -15,6 +15,14 @@ export class FuncionarioSaudeRepository {
     return await db.select().from(funcionarioSaude);
   }
 
+  async findByEspecialidade(especialidade: string): Promise<FuncionarioSaude[]> {
+    const results = await db
+      .select()
+      .from(funcionarioSaude)
+      .where(eq(funcionarioSaude.especialidade, especialidade));
+    return results;
+  }
+
   async findById(cpf: string): Promise<FuncionarioSaude | null> {
     const results = await db
       .select()
