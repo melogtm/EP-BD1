@@ -122,7 +122,7 @@ export function AgendamentoModal() {
         valorAtendimento: 250.0,
         observacoesClinicas: `Agendada via portal - ${especialidade}`,
         tipoAtendimento: "consulta",
-        statusAtendimento: "agendada",
+        statusAtendimento: "Agendado",
       };
 
       await consultaService.create(novaConsulta);

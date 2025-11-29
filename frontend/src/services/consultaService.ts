@@ -82,7 +82,7 @@ export const consultaService = {
           cpfFuncSaude: "123.456.789-01",
           medico: { nome: "Dr. João Silva" },
           cpfPaciente: cpfPaciente,
-          status: "realizada",
+          status: "Realizado",
         },
         {
           id: 2,
@@ -90,7 +90,7 @@ export const consultaService = {
           cpfFuncSaude: "987.654.321-00",
           medico: { nome: "Dra. Maria Santos" },
           cpfPaciente: cpfPaciente,
-          status: "realizada",
+          status: "Realizado",
         },
       ];
     }
@@ -111,7 +111,7 @@ export const consultaService = {
           cpfFuncSaude: "123.456.789-01",
           medico: { nome: "Dr. João Silva" },
           cpfPaciente: cpfPaciente,
-          status: "agendada",
+          status: "Agendado",
         },
       ];
     }
@@ -180,21 +180,21 @@ export const consultaService = {
           dataHoraAgendada: "2025-11-29T09:00:00",
           cpfFuncSaude: cpfMedico,
           paciente: { cpf: "111.222.333-44", nome: "Ana Costa" },
-          status: "agendada",
+          status: "Agendado",
         },
         {
           id: 5,
           dataHoraAgendada: "2025-11-29T10:30:00",
           cpfFuncSaude: cpfMedico,
           paciente: { cpf: "555.666.777-88", nome: "Pedro Almeida" },
-          status: "agendada",
+          status: "Agendado",
         },
         {
           id: 6,
           dataHoraAgendada: "2025-11-29T14:00:00",
           cpfFuncSaude: cpfMedico,
           paciente: { cpf: "999.888.777-66", nome: "Carla Souza" },
-          status: "agendada",
+          status: "Agendado",
         },
       ];
     }
