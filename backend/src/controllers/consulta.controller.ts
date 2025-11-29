@@ -113,9 +113,10 @@ export class ConsultaController {
     }
   }
 
-  async getHorariosDisponiveis(req: Request, res: Response) : Promise<Response> {
+  async getHorariosDisponiveis(req: Request, res: Response): Promise<Response> {
+    console.log(req.params);
     try {
-      const { cpfPaciente, especialidade, data } = req.query;
+      const { cpfPaciente, especialidade, data } = req.params;
       if (
         typeof cpfPaciente !== "string" ||
         typeof especialidade !== "string" ||
@@ -126,13 +127,20 @@ export class ConsultaController {
             "Parâmetros 'cpfPaciente', 'especialidade' e 'data' são obrigatórios",
         });
       }
+
+      console.log(cpfPaciente, especialidade, data);
+
       const horarios = await this.consultaService.getHorariosDisponiveis(
         cpfPaciente,
         especialidade,
         data
       );
+
+      console.log(horarios);
+
       return res.status(200).json(horarios);
     } catch (error: unknown) {
+      console.error(error);
       const { statusCode, message, detail } = mapPostgresErrorToHttp(error);
       return res.status(statusCode).json({ message, detail });
     }

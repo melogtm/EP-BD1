@@ -4,16 +4,21 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
-import Dashboard from "./pages/Dashboard";
-import DiagnosticoPage from "./pages/DiagnosticoPage";
-import MedicamentoPage from "./pages/MedicamentoPage";
-import PacientePage from "./pages/PacientePage";
-import ConsultaPage from "./pages/ConsultaPage";
-import ExamePage from "./pages/ExamePage";
-import FuncionarioPage from "./pages/FuncionarioPage";
-import EmpresaPage from "./pages/EmpresaPage";
-import SalaPage from "./pages/SalaPage";
-import NotFound from "./pages/NotFound";
+import RoleSelector from "./pages/RoleSelector"; // Novo componente
+import Dashboard from "./pages/admin/Dashboard";
+import DiagnosticoPage from "./pages/admin/DiagnosticoPage";
+import MedicamentoPage from "./pages/admin/MedicamentoPage";
+import PacientePage from "./pages/admin/PacientePage";
+import ConsultaPage from "./pages/admin/ConsultaPage";
+import ExamePage from "./pages/admin/ExamePage";
+import FuncionarioPage from "./pages/admin/FuncionarioPage";
+import EmpresaPage from "./pages/admin/EmpresaPage";
+import SalaPage from "./pages/admin/SalaPage";
+import NotFound from "./pages/admin/NotFound";
+import CpfEntry from "./pages/CpfEntry";
+import MedicoAgendaPage from "./pages/medico/DashboardMedico";
+import PacienteConsultasPage from "./pages/paciente/DashboardPaciente";
+import AdminAnalyticsPage from "./pages/admin/AdminAnalyticsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,16 +36,50 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout><Dashboard /></Layout>} />
-          <Route path="/diagnosticos" element={<Layout><DiagnosticoPage /></Layout>} />
-          <Route path="/medicamentos" element={<Layout><MedicamentoPage /></Layout>} />
-          <Route path="/pacientes" element={<Layout><PacientePage /></Layout>} />
-          <Route path="/consultas" element={<Layout><ConsultaPage /></Layout>} />
-          <Route path="/exames" element={<Layout><ExamePage /></Layout>} />
-          <Route path="/funcionarios" element={<Layout><FuncionarioPage /></Layout>} />
-          <Route path="/empresas" element={<Layout><EmpresaPage /></Layout>} />
-          <Route path="/salas" element={<Layout><SalaPage /></Layout>} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* SELETOR DE PERFIS (Página inicial) */}
+          <Route
+            path="/"
+            element={
+              <Layout>
+                <RoleSelector />
+              </Layout>
+            }
+          />
+
+          <Route path="/login" element={<Layout />}>
+            <Route
+              path="paciente"
+              index
+              element={<CpfEntry role="paciente" />}
+            />
+            <Route path="medico" index element={<CpfEntry role="medico" />} />
+          </Route>
+
+          {/* VISÃO MÉDICO */}
+          <Route path="/medico" element={<Layout />}>
+            <Route index element={<MedicoAgendaPage />} />
+          </Route>
+
+          {/* VISÃO PACIENTE */}
+          <Route path="/paciente" element={<Layout />}>
+            <Route index element={<PacienteConsultasPage />} />
+          </Route>
+
+          {/* VISÃO ADMIN (Acesso completo) */}
+          <Route path="/admin" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="analytics" element={<AdminAnalyticsPage />} />
+            <Route path="diagnosticos" element={<DiagnosticoPage />} />
+            <Route path="medicamentos" element={<MedicamentoPage />} />
+            <Route path="pacientes" element={<PacientePage />} />
+            <Route path="consultas" element={<ConsultaPage />} />
+            <Route path="exames" element={<ExamePage />} />
+            <Route path="funcionarios" element={<FuncionarioPage />} />
+            <Route path="empresas" element={<EmpresaPage />} />
+            <Route path="salas" element={<SalaPage />} />
+          </Route>
+
+          {/* CATCH-ALL */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

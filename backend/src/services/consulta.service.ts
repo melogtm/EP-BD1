@@ -131,14 +131,19 @@ export class ConsultaService {
     }
 
     // Query booked consultations for that day for these medics or for the patient
-    const booked = await db.select().from(consulta).where(
-      and(
-        gte(consulta.dataHoraAgendada, start),
-        lt(consulta.dataHoraAgendada, end),
-        eq(consulta.statusAtendimento, "Agendado"),
-        or(medicosCondition, eq(consulta.cpfPaciente, cpfPaciente))
-      )
-    );
+    const booked = await db
+      .select()
+      .from(consulta)
+      .where(
+        and(
+          gte(consulta.dataHoraAgendada, start),
+          lt(consulta.dataHoraAgendada, end),
+          eq(consulta.statusAtendimento, "Agendado"),
+          or(medicosCondition, eq(consulta.cpfPaciente, cpfPaciente))
+        )
+      );
+
+    console.log("Booked", booked);
 
     const bookedSet = new Set<string>();
     for (const b of booked) {
@@ -171,10 +176,7 @@ export class ConsultaService {
     return slots;
   }
 
-  async getAgendaMedicoDia(
-    cpfMedico: string,
-    data: string
-  ): Promise<any[]> {
+  async getAgendaMedicoDia(cpfMedico: string, data: string): Promise<any[]> {
     // validate medico
     const medico = await this.funcionarioRepo.findById(cpfMedico);
     if (!medico) throw new NotFoundError("Médico não encontrado");
@@ -186,8 +188,12 @@ export class ConsultaService {
 
     // sort by scheduled time ascending
     rows.sort((a: any, b: any) => {
-      const da = a.dataHoraAgendada ? new Date(a.dataHoraAgendada).getTime() : 0;
-      const db = b.dataHoraAgendada ? new Date(b.dataHoraAgendada).getTime() : 0;
+      const da = a.dataHoraAgendada
+        ? new Date(a.dataHoraAgendada).getTime()
+        : 0;
+      const db = b.dataHoraAgendada
+        ? new Date(b.dataHoraAgendada).getTime()
+        : 0;
       return da - db;
     });
 

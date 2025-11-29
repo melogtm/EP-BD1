@@ -1,0 +1,59 @@
+node_modules/
+dist/
+.env
+.env.*
+.next/
+.vercel/
+.turbo/
+.cache/
+.output/
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.bun*
+.idea/
+.vscode/
+*.swp
+*.swo
+*.tmp
+*.bak
+*.lock
+coverage/
+*.tsbuildinfo
+*.tgz
+*.zip
+*.gz
+*.rar
+*.7z
+*.sqlite
+*.db
+*.pid
+*.seed
+*.pem
+*.crt
+*.key
+
+# Tailwind JIT cache
+/.tailwind-cache/
+
+# MacOS
+.DS_Store
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Test coverage
+/coverage/
+
+# Build output
+build/
+
+# Misc
+*.orig
