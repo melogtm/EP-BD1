@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,13 +18,20 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Clock, CalendarIcon, CheckCircle } from "lucide-react";
+import { Clock, CheckCircle } from "lucide-react";
 import { consultaService } from "@/services/consultaService";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { Consulta } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { funcionarioSaudeService } from "@/services/funcionarioService";
+
+interface MedicoDisponivel {
+  cpfFuncSaude: string;
+  nomeMedico: string;
+  salaDisponivel: number;
+  disponivel: boolean;
+}
 
 export function AgendamentoModal() {
   const queryClient = useQueryClient();
@@ -34,13 +41,15 @@ export function AgendamentoModal() {
   const [dataSelecionada, setDataSelecionada] = useState<Date>();
   const [horarioSelecionado, setHorarioSelecionado] = useState("");
   const [horarios, setHorarios] = useState<string[]>([]);
+  const [medicoSelecionado, setMedicoSelecionado] =
+    useState<MedicoDisponivel | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const userCpf = localStorage.getItem("userCpf") || "";
 
   const { data: especialidades = [] } = useQuery({
     queryKey: ["especialidades"],
     queryFn: () => funcionarioSaudeService.getEspecialidades(),
-    staleTime: 5 * 60 * 1000, // 5 minutos cache
+    staleTime: 5 * 60 * 1000,
   });
 
   const buscarHorarios = async () => {
@@ -61,13 +70,39 @@ export function AgendamentoModal() {
     }
   };
 
-  const selecionarHorario = (horario: string) => {
+  const selecionarHorario = async (horario: string) => {
     setHorarioSelecionado(horario);
-    setStep("confirmacao");
+    setIsLoading(true);
+
+    try {
+      const medicoDisponivel = await consultaService.getMedicoDisponivel(
+        userCpf,
+        especialidade.toLowerCase(),
+        format(dataSelecionada!, "yyyy-MM-dd"),
+        horario
+      );
+
+      if (medicoDisponivel.disponivel) {
+        setMedicoSelecionado(medicoDisponivel);
+        setStep("confirmacao");
+      } else {
+        toast.error("❌ Nenhum médico disponível neste horário");
+      }
+    } catch {
+      toast.error("❌ Erro ao verificar disponibilidade");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const confirmarAgendamento = async () => {
-    if (!especialidade || !dataSelecionada || !horarioSelecionado) return;
+    if (
+      !especialidade ||
+      !dataSelecionada ||
+      !horarioSelecionado ||
+      !medicoSelecionado
+    )
+      return;
 
     setIsLoading(true);
 
@@ -79,15 +114,15 @@ export function AgendamentoModal() {
 
       const novaConsulta: Consulta = {
         dataHoraAgendada: dataHoraCompleta,
-        cpfFuncSaude: "123.456.789-01", // ✅ Mock - backend real busca por especialidade
+        cpfFuncSaude: medicoSelecionado.cpfFuncSaude, // ✅ MÉDICO REAL
         cpfPaciente: userCpf,
-        sala: 101,
+        sala: medicoSelecionado.salaDisponivel, // ✅ SALA REAL
         dataHoraInicio: undefined,
         dataHoraFim: undefined,
         valorAtendimento: 250.0,
         observacoesClinicas: `Agendada via portal - ${especialidade}`,
         tipoAtendimento: "consulta",
-        statusAtendimento: "confirmada",
+        statusAtendimento: "agendada",
       };
 
       await consultaService.create(novaConsulta);
@@ -117,6 +152,7 @@ export function AgendamentoModal() {
     setDataSelecionada(undefined);
     setHorarioSelecionado("");
     setHorarios([]);
+    setMedicoSelecionado(null);
     setStep("selecao");
   };
 
@@ -142,9 +178,7 @@ export function AgendamentoModal() {
         </DialogHeader>
 
         {step === "selecao" ? (
-          // PASSO 1: Seleção
           <div className="space-y-4">
-            {/* ✅ Select com especialidades do BACKEND */}
             <Select
               onValueChange={setEspecialidade}
               value={especialidade}
@@ -202,6 +236,7 @@ export function AgendamentoModal() {
                       size="sm"
                       onClick={() => selecionarHorario(horario)}
                       className="h-10 border-green-300 hover:bg-green-50"
+                      disabled={isLoading}
                     >
                       {horario}
                     </Button>
@@ -211,7 +246,6 @@ export function AgendamentoModal() {
             )}
           </div>
         ) : (
-          // PASSO 2: Confirmação (sem mudanças)
           <div className="space-y-4 text-center">
             <CheckCircle className="h-12 w-12 mx-auto text-green-500 mb-4" />
             <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-6 rounded-2xl border">
@@ -221,9 +255,9 @@ export function AgendamentoModal() {
               </div>
             </div>
             <div className="text-sm text-muted-foreground space-y-1">
-              <p>• Dr. João Silva (mock)</p>
-              <p>• Status: Confirmada</p>
-              <p>• CPF: {userCpf}</p>
+              <p>• {medicoSelecionado?.nomeMedico || "Dr. João Silva"}</p>
+              <p>• Sala {medicoSelecionado?.salaDisponivel || 101}</p>
+              <p>• Status: Agendada</p>
             </div>
           </div>
         )}

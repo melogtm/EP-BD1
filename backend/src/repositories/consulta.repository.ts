@@ -67,7 +67,7 @@ export class ConsultaRepository {
   }
 
   async findPastByPaciente(cpfPaciente: string): Promise<Consulta[]> {
-    const statuses = ["Cancelado", "Realizado"];
+    const statuses = ["cancelada", "realizada"];
 
     let statusCondition: any = null;
     for (const s of statuses) {
@@ -92,7 +92,7 @@ export class ConsultaRepository {
   }
 
   async findFutureByPaciente(cpfPaciente: string): Promise<Consulta[]> {
-    const statuses = ["Agendado"];
+    const statuses = ["agendada"];
 
     let statusCondition: any = null;
     for (const s of statuses) {

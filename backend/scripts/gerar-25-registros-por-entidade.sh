@@ -259,7 +259,7 @@ done
 echo ""
 echo "1️⃣5️⃣ Criando 70 Consultas em múltiplos dias para simular agenda real..."
 DAYS=("2025-11-29" "2025-11-30" "2025-12-01" "2025-12-02" "2025-12-03" "2025-12-04" "2025-12-05")
-STATUS=("Realizado" "Confirmada" "Cancelado" "Realizado" "Confirmada" "Confirmada" "Cancelado")
+STATUS=("Realizado" "Agendada" "Cancelado" "Realizado" "Agendada" "Agendada" "Cancelado")
 TIPOS=("Presencial" "Remoto" "Presencial" "Remoto" "Presencial" "Presencial" "Remoto")
 for i in $(seq 1 70); do
   I_DIA=$(( (i-1) % 7 ))
