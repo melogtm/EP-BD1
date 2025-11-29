@@ -33,6 +33,10 @@ consultaRoutes.get(
   consultaController.getByMedico.bind(consultaController)
 );
 
+consultaRoutes.get(
+  "/:cpfPaciente/:especialidade/:data",
+  consultaController.getHorariosDisponiveis.bind(consultaController)
+);
 
 consultaRoutes.patch(
   "/:dataHoraAgendada/:cpfFuncSaude/:cpfPaciente",
