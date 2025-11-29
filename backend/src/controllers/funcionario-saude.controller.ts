@@ -27,6 +27,16 @@ export class FuncionarioSaudeController {
     }
   }
 
+  async getEspecialidades(_req: Request, res: Response): Promise<Response> {
+    try {
+      const especialidades = await this.funcionarioSaudeService.getEspecialidades();
+      return res.status(200).json(especialidades);
+    } catch (error: unknown) {
+      const { statusCode, message, detail } = mapPostgresErrorToHttp(error);
+      return res.status(statusCode).json({ message, detail });
+    }
+  }
+
   async getById(req: Request, res: Response): Promise<Response> {
     try {
       const cpf = req.params.cpf;

@@ -26,4 +26,8 @@ export class FuncionarioSaudeService {
   async delete(cpf: string): Promise<FuncionarioSaude> {
     return this.repository.delete(cpf);
   }
+
+  async getEspecialidades(): Promise<string[]> {
+    return this.repository.getEspecialidades();
+  }
 }

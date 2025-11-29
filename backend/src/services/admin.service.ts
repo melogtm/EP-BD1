@@ -116,8 +116,9 @@ export class AdminService {
     const telefones = await this.repo.getTelefonesByCpfs(patientCpfs);
     const telefoneMap: Record<string, any[]> = {};
     for (const t of telefones) {
-      telefoneMap[t.cpf] = telefoneMap[t.cpf] || [];
-      telefoneMap[t.cpf].push(t);
+      const cpfKey = t.cpf ?? 'unknown';
+      if (!telefoneMap[cpfKey]) telefoneMap[cpfKey] = [];
+      telefoneMap[cpfKey].push(t);
     }
 
     // group by medico

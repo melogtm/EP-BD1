@@ -11,6 +11,13 @@ export class FuncionarioSaudeRepository {
     return result;
   }
 
+  async getEspecialidades(): Promise<string[]> {
+    const rows = await db.select().from(funcionarioSaude);
+    const set = new Set<string>();
+    for (const r of rows) if (r.especialidade) set.add(String(r.especialidade));
+    return Array.from(set).sort();
+  }
+
   async findAll(): Promise<FuncionarioSaude[]> {
     return await db.select().from(funcionarioSaude);
   }
