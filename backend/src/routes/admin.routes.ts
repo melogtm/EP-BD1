@@ -9,4 +9,24 @@ adminRoutes.get(
   adminController.getPagamentosTotais.bind(adminController)
 );
 
+adminRoutes.get(
+  "/funcionarios-pacientes",
+  adminController.getFuncionariosPacientes.bind(adminController)
+);
+
+adminRoutes.get(
+  "/pacientes/cancelamentos",
+  adminController.getPacientesCancelamentos.bind(adminController)
+);
+
+adminRoutes.get(
+  "/pacientes/sem-exames",
+  adminController.getPacientesSemExames.bind(adminController)
+);
+
+adminRoutes.get(
+  "/confirmacoes",
+  adminController.getConfirmacoesDiaMedico.bind(adminController)
+);
+
 export { adminRoutes };
