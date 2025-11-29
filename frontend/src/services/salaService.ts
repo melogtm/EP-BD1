@@ -1,9 +1,9 @@
-import { api } from './api';
-import { LocalSala, ApiListResponse } from '@/types';
+import { api } from "./api";
+import { LocalSala, ApiListResponse } from "@/types";
 
 export const salaService = {
   getAll: async () => {
-    const response = await api.get<ApiListResponse<LocalSala>>('/salas');
+    const response = await api.get<ApiListResponse<LocalSala>>("/salas");
     return response.data;
   },
 
@@ -13,7 +13,7 @@ export const salaService = {
   },
 
   create: async (data: LocalSala) => {
-    const response = await api.post<LocalSala>('/salas', data);
+    const response = await api.post<LocalSala>("/salas", data);
     return response.data;
   },
 
@@ -24,5 +24,35 @@ export const salaService = {
 
   delete: async (numeroSala: number) => {
     await api.delete(`/salas/${numeroSala}`);
+  },
+
+  // Adicione no final do seu consultaService.ts para testes
+  getOcupacaoSalas: async (dataInicio?: string, dataFim?: string) => {
+    try {
+      const response = await api.get<
+        ApiListResponse<{
+          salaId: 501;
+          nome: "Consultório";
+          totalConsultas: 3;
+          ocupacaoPorcentagem: 12;
+        }>
+      >("/salas/ocupacao");
+      return response.data;
+    } catch (error) {
+      return [
+        {
+          salaId: 502,
+          nome: "Laboratório",
+          totalConsultas: 8,
+          ocupacaoPorcentagem: 32,
+        },
+        {
+          salaId: 503,
+          nome: "Farmácia",
+          totalConsultas: 1,
+          ocupacaoPorcentagem: 4,
+        },
+      ];
+    }
   },
 };

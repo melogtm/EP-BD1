@@ -200,29 +200,6 @@ export const consultaService = {
     }
   },
 
-  getOcupacaoSalas: async (dataInicio?: string, dataFim?: string) => {
-    // Mock salas menos usadas
-    return [
-      {
-        salaId: 1,
-        nome: "Sala 101",
-        totalConsultas: 5,
-        ocupacaoPorcentagem: 20,
-      },
-      {
-        salaId: 2,
-        nome: "Sala 102",
-        totalConsultas: 12,
-        ocupacaoPorcentagem: 48,
-      },
-      {
-        salaId: 3,
-        nome: "Sala 103",
-        totalConsultas: 3,
-        ocupacaoPorcentagem: 12,
-      },
-    ] as SalaOcupacao[];
-  },
 
   getPagamentosMes: async () => {
     // Mock pagamentos

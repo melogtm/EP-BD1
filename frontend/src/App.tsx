@@ -68,7 +68,7 @@ const App = () => (
           {/* VISÃO ADMIN (Acesso completo) */}
           <Route path="/admin" element={<Layout />}>
             <Route index element={<Dashboard />} />
-            <Route path="analytics" element={<AdminAnalyticsPage />} />
+            <Route path="analises" element={<AdminAnalyticsPage />} />
             <Route path="diagnosticos" element={<DiagnosticoPage />} />
             <Route path="medicamentos" element={<MedicamentoPage />} />
             <Route path="pacientes" element={<PacientePage />} />

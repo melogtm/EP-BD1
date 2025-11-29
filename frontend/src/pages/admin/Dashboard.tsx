@@ -1,20 +1,20 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Activity, Users, Pill, FileText, Calendar, Stethoscope } from 'lucide-react';
+import { Activity, Users, Pill, FileText, Calendar, Stethoscope, Sheet } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const modules = [
+  {
+    title: 'Análises',
+    description: 'Análises e relatórios do sistema hospitalar',
+    icon: Sheet,
+    path: '/admin/analises',
+    color: 'text-primary',
+  },
   {
     title: 'Diagnósticos',
     description: 'Gerenciar diagnósticos e códigos CID-10',
     icon: FileText,
     path: '/admin/diagnosticos',
-    color: 'text-primary',
-  },
-  {
-    title: 'Medicamentos',
-    description: 'Cadastro de medicamentos e controle de estoque',
-    icon: Pill,
-    path: '/admin/medicamentos',
     color: 'text-primary',
   },
   {

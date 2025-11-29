@@ -1,0 +1,1 @@
+ALTER TABLE "local_sala" ADD COLUMN "capacidade" integer;
