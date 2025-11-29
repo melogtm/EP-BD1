@@ -9,10 +9,20 @@ export default function MedicoAgendaPage() {
   const userCpf = localStorage.getItem("userCpf") || "";
   const hoje = format(new Date(), "yyyy-MM-dd");
 
-  const { data: agendaHoje } = useQuery({
+  const { data: agendaHoje = [] } = useQuery({
     queryKey: ["agenda-medico", userCpf, hoje],
     queryFn: () => consultaService.getAgendaMedicoDia(userCpf, hoje),
   });
+
+  // ✅ Função segura para formatar data
+  const formatDataSegura = (dataHoraAgendada: string | undefined) => {
+    if (!dataHoraAgendada) return "Horário inválido";
+    try {
+      return format(new Date(dataHoraAgendada), "HH:mm", { locale: ptBR });
+    } catch {
+      return "Horário inválido";
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -28,7 +38,7 @@ export default function MedicoAgendaPage() {
 
       <Card>
         <CardContent className="pt-6">
-          {agendaHoje?.length ? (
+          {agendaHoje.length ? (
             <div className="grid gap-4">
               {agendaHoje.map((consulta) => (
                 <div
@@ -37,26 +47,26 @@ export default function MedicoAgendaPage() {
                 >
                   <div>
                     <div className="font-semibold">
-                      {consulta.paciente.nome}
+                      {consulta.paciente?.nome || "Paciente não identificado"}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {consulta.paciente.cpf}
+                      {consulta.paciente?.cpf || "CPF não disponível"}
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="font-mono text-lg">
-                      {format(new Date(consulta.data), "HH:mm")}
+                      {formatDataSegura(consulta.dataHoraAgendada)}
                     </div>
                     <span
-                      className={`px-2 py-1 rounded-full text-xs ${
-                        consulta.status === "confirmada"
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        consulta.status === "Agendado"
                           ? "bg-green-100 text-green-800"
-                          : consulta.status === "cancelada"
+                          : consulta.status === "Cancelado"
                           ? "bg-red-100 text-red-800"
                           : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
-                      {consulta.status}
+                      {consulta.status || "pendente"}
                     </span>
                   </div>
                 </div>

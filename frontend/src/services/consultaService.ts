@@ -82,7 +82,7 @@ export const consultaService = {
           cpfFuncSaude: "123.456.789-01",
           medico: { nome: "Dr. João Silva" },
           cpfPaciente: cpfPaciente,
-          status: "realizada",
+          status: "Realizado",
         },
         {
           id: 2,
@@ -90,7 +90,7 @@ export const consultaService = {
           cpfFuncSaude: "987.654.321-00",
           medico: { nome: "Dra. Maria Santos" },
           cpfPaciente: cpfPaciente,
-          status: "realizada",
+          status: "Realizado",
         },
       ];
     }
@@ -111,7 +111,7 @@ export const consultaService = {
           cpfFuncSaude: "123.456.789-01",
           medico: { nome: "Dr. João Silva" },
           cpfPaciente: cpfPaciente,
-          status: "confirmada",
+          status: "Agendado",
         },
       ];
     }
@@ -126,12 +126,43 @@ export const consultaService = {
       const response = await api.get<ApiListResponse<Consulta>>(
         `/consultas/${cpfPaciente}/${especialidade}/${data}`
       );
-      console.log(response);
-      console.log(response.data);
       return response.data || [];
     } catch {
       // Mock data
       return ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
+    }
+  },
+
+  getMedicoDisponivel: async (
+    cpfPaciente: string,
+    especialidade: string,
+    data: string,
+    horario: string
+  ) => {
+    try {
+      const response = await api.get(
+        `/consultas/disponiveis/${cpfPaciente}/${especialidade}/${data}/${horario}`
+      );
+      return response.data;
+    } catch {
+      // Mock baseado no seed script
+      const medicosPorEspecialidade: Record<string, string> = {
+        ortopedia: "10000036",
+        cardiologia: "10000033",
+        pediatria: "10000035",
+        dermatologia: "10000038",
+        neurologia: "10000037",
+      };
+
+      const cpfMedico = medicosPorEspecialidade[especialidade] || "10000036";
+      return {
+        cpfFuncSaude: cpfMedico,
+        nomeMedico: `Dr(a) ${
+          especialidade.charAt(0).toUpperCase() + especialidade.slice(1)
+        }`,
+        salaDisponivel: 504,
+        disponivel: true,
+      };
     }
   },
 
@@ -149,21 +180,21 @@ export const consultaService = {
           dataHoraAgendada: "2025-11-29T09:00:00",
           cpfFuncSaude: cpfMedico,
           paciente: { cpf: "111.222.333-44", nome: "Ana Costa" },
-          status: "confirmada",
+          status: "Agendado",
         },
         {
           id: 5,
           dataHoraAgendada: "2025-11-29T10:30:00",
           cpfFuncSaude: cpfMedico,
           paciente: { cpf: "555.666.777-88", nome: "Pedro Almeida" },
-          status: "confirmada",
+          status: "Agendado",
         },
         {
           id: 6,
           dataHoraAgendada: "2025-11-29T14:00:00",
           cpfFuncSaude: cpfMedico,
           paciente: { cpf: "999.888.777-66", nome: "Carla Souza" },
-          status: "cancelada",
+          status: "Agendado",
         },
       ];
     }
