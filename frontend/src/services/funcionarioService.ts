@@ -57,6 +57,14 @@ export const funcionarioSaudeService = {
     return response.data;
   },
 
+  getEspecialidades: async () => {
+    const response = await api.get<ApiListResponse<FuncionarioSaude>>(
+      "/funcionarios-saude/especialidades"
+    );
+    console.log(response.data);
+    return response.data;
+  },
+
   getById: async (cpf: string) => {
     const response = await api.get<FuncionarioSaude>(
       `/funcionarios-saude/${cpf}`

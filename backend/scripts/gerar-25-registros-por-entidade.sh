@@ -254,21 +254,48 @@ for i in $(seq 1 25); do
 done
 
 # =============================================================================
-# 15. CONSULTA (25)
+# 15. CONSULTA (70) - dias 29 nov a 5 dez, várias especialidades simuladas
 # =============================================================================
 echo ""
-echo "1️⃣5️⃣ Criando 25 Consultas..."
-for i in $(seq 1 25); do
-  DAY=$((1+i%28))
-  DTH="2025-11-$(printf "%02d" $DAY)T09:00:00Z"
-  SALA=$((500+((i-1)%25)+1))
-  CPF_MED="1$(printf "%08d" $((32+((i-1)%11)+1)))"
-  CPF_PAC="1$(printf "%08d" $((43+((i-1)%25)+1)))"
+echo "1️⃣5️⃣ Criando 70 Consultas em múltiplos dias para simular agenda real..."
+DAYS=("2025-11-29" "2025-11-30" "2025-12-01" "2025-12-02" "2025-12-03" "2025-12-04" "2025-12-05")
+STATUS=("Realizado" "Confirmada" "Cancelado" "Realizado" "Confirmada" "Confirmada" "Cancelado")
+TIPOS=("Presencial" "Remoto" "Presencial" "Remoto" "Presencial" "Presencial" "Remoto")
+for i in $(seq 1 70); do
+  I_DIA=$(( (i-1) % 7 ))
+  DIA=${DAYS[$I_DIA]}
+  HORA=$((9 + (i % 8)))
+  HORA_FORMAT=$(printf "%02d:00:00Z" $HORA)
+  DTH="$DIA"T"$HORA_FORMAT"
+
+  SALA=$((500 + ((i-1) % 25) + 1))
+  
+  CPF_MED="1$(printf "%08d" $((32 + ((i-1) % 11) + 1)))"
+  CPF_PAC="1$(printf "%08d" $((43 + ((i-1) % 25) + 1)))"
+
+  # Define observaçoesClinicas com a especialidade do médico mockada via CPF % lista
+  docs=("Cardiologia" "Clínica Geral" "Pediatria" "Ortopedia" "Neurologia" "Dermatologia" "Otorrino" "Nefrologia" "Oncologia" "Gastro" "Urologia")
+  ESPECIALIDADE=${docs[$(( (i-1) % 11 ))]}
+
+  VALOR=$((150 + (i % 100)))
+
   RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$BASE_URL/consultas" \
     -H "Content-Type: application/json" \
-    -d "{\"dataHoraAgendada\":\"$DTH\",\"cpfFuncSaude\":\"$CPF_MED\",\"cpfPaciente\":\"$CPF_PAC\",\"sala\":$SALA,\"dataHoraInicio\":\"$DTH\",\"dataHoraFim\":\"2025-11-$(printf "%02d" $DAY)T10:00:00Z\",\"valorAtendimento\":\"$((150+i*2)).00\",\"observacoesClinicas\":\"Consulta $i\",\"tipoAtendimento\":\"Presencial\",\"statusAtendimento\":\"Realizado\"}")
+    -d "{
+      \"dataHoraAgendada\": \"$DTH\",
+      \"cpfFuncSaude\": \"$CPF_MED\",
+      \"cpfPaciente\": \"$CPF_PAC\",
+      \"sala\": $SALA,
+      \"dataHoraInicio\": \"$DTH\",
+      \"dataHoraFim\": \"$DIA"T"$(printf "%02d:00:00Z" $((HORA+1)))\",
+      \"valorAtendimento\": \"$VALOR\",
+      \"observacoesClinicas\": \"Consulta em $ESPECIALIDADE\",
+      \"tipoAtendimento\": \"${TIPOS[$I_DIA]}\",
+      \"statusAtendimento\": \"${STATUS[$I_DIA]}\"
+    }")
+
   HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-  [[ $HTTP_CODE =~ ^2[0-9][0-9]$ ]] && log_ok "Consulta $i" || log_err "Consulta $i - HTTP $HTTP_CODE"
+  [[ $HTTP_CODE =~ ^2[0-9][0-9]$ ]] && log_ok "Consulta $i ($DIA $HORA:00 - $ESPECIALIDADE)" || log_err "Consulta $i HTTP $HTTP_CODE"
 done
 
 # =============================================================================

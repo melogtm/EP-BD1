@@ -1,7 +1,10 @@
-import { eq } from "drizzle-orm";
+import { eq, ilike } from "drizzle-orm";
 import { db } from "../db/index";
 import { funcionarioSaude } from "../db/schemas/schemas";
-import type { FuncionarioSaude, FuncionarioSaudeInsert } from "../db/schemas/schemas.types";
+import type {
+  FuncionarioSaude,
+  FuncionarioSaudeInsert,
+} from "../db/schemas/schemas.types";
 import { NotFoundError } from "../errors/NotFoundError";
 
 export class FuncionarioSaudeRepository {
@@ -22,11 +25,13 @@ export class FuncionarioSaudeRepository {
     return await db.select().from(funcionarioSaude);
   }
 
-  async findByEspecialidade(especialidade: string): Promise<FuncionarioSaude[]> {
+  async findByEspecialidade(
+    especialidade: string
+  ): Promise<FuncionarioSaude[]> {
     const results = await db
       .select()
       .from(funcionarioSaude)
-      .where(eq(funcionarioSaude.especialidade, especialidade));
+      .where(ilike(funcionarioSaude.especialidade, especialidade));
     return results;
   }
 
@@ -38,13 +43,17 @@ export class FuncionarioSaudeRepository {
     return results[0] ?? null;
   }
 
-  async update(cpf: string, data: Partial<FuncionarioSaudeInsert>): Promise<FuncionarioSaude> {
+  async update(
+    cpf: string,
+    data: Partial<FuncionarioSaudeInsert>
+  ): Promise<FuncionarioSaude> {
     const results = await db
       .update(funcionarioSaude)
       .set(data)
       .where(eq(funcionarioSaude.cpf, cpf))
       .returning();
-    if (!results[0]) throw new NotFoundError(`Funcionário de saúde ${cpf} não encontrado`);
+    if (!results[0])
+      throw new NotFoundError(`Funcionário de saúde ${cpf} não encontrado`);
     return results[0];
   }
 
@@ -53,7 +62,8 @@ export class FuncionarioSaudeRepository {
       .delete(funcionarioSaude)
       .where(eq(funcionarioSaude.cpf, cpf))
       .returning();
-    if (!results[0]) throw new NotFoundError(`Funcionário de saúde ${cpf} não encontrado`);
+    if (!results[0])
+      throw new NotFoundError(`Funcionário de saúde ${cpf} não encontrado`);
     return results[0];
   }
 }
